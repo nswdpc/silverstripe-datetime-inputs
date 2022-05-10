@@ -2,7 +2,12 @@
 
 namespace NSWDPC\DateInputs\Tests;
 
+use NSWDPC\DateInputs\DateCompositeField;
 use NSWDPC\DateInputs\DatetimeCompositeField;
+use NSWDPC\DateInputs\DayOfMonthField;
+use NSWDPC\DateInputs\MonthNumberField;
+use NSWDPC\DateInputs\YearField;
+use NSWDPC\DateInputs\TimeField;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Dev\SapphireTest;
@@ -107,15 +112,90 @@ class DatetimeCompositeFieldTest extends SapphireTest {
         // an invalid time on the date
         $dateValue = "2030-11-30 25:69";
         $fieldName = "Birthday";
+        $fieldWarning = "TEST_FIELD_WARNING";
         $field = DatetimeCompositeField::create(
             $fieldName,
             'Date and time of birth',
             $dateValue
         );
 
-        $this->assertNotEmpty(
-            $field->getFieldWarning()
+        $field->setFieldWarning($fieldWarning);
+        $this->assertEquals( $fieldWarning, $field->getFieldWarning() );
+
+    }
+
+    public function testDmyFieldOrdering() {
+        $dateValue = "2030-11-30 11:45";
+        $fieldName = "AppointmentDateTime";
+        $field = DatetimeCompositeField::create(
+            $fieldName,
+            'Appointment date and time',
+            $dateValue,
+            DateCompositeField::ORDER_DMY,
+            'DMY field warning'
         );
+        $children = $field->getChildren();
+        $dayField = $children->offsetGet(0);
+        $monthField = $children->offsetGet(1);
+        $yearField = $children->offsetGet(2);
+        $timeField = $children->offsetGet(3);
+
+        $this->assertInstanceOf( DayOfMonthField::class, $dayField );
+        $this->assertInstanceOf( MonthNumberField::class, $monthField );
+        $this->assertInstanceOf( YearField::class, $yearField );
+        $this->assertInstanceOf( TimeField::class, $timeField );
+
+        $this->assertEquals($dateValue, $field->dataValue() );
+
+    }
+
+    public function testMdyFieldOrdering() {
+        $dateValue = "2030-11-30 11:45";
+        $fieldName = "AppointmentDateTime";
+        $field = DatetimeCompositeField::create(
+            $fieldName,
+            'Appointment date and time',
+            $dateValue,
+            DateCompositeField::ORDER_MDY,
+            'MDY field warning'
+        );
+        $children = $field->getChildren();
+        $dayField = $children->offsetGet(1);
+        $monthField = $children->offsetGet(0);
+        $yearField = $children->offsetGet(2);
+        $timeField = $children->offsetGet(3);
+
+        $this->assertInstanceOf( DayOfMonthField::class, $dayField );
+        $this->assertInstanceOf( MonthNumberField::class, $monthField );
+        $this->assertInstanceOf( YearField::class, $yearField );
+        $this->assertInstanceOf( TimeField::class, $timeField );
+
+        $this->assertEquals($dateValue, $field->dataValue() );
+
+    }
+
+    public function testYmdFieldOrdering() {
+        $dateValue = "2030-11-30 11:45";
+        $fieldName = "AppointmentDateTime";
+        $field = DatetimeCompositeField::create(
+            $fieldName,
+            'Appointment date and time',
+            $dateValue,
+            DateCompositeField::ORDER_YMD,
+            'YMD field warning'
+        );
+        $children = $field->getChildren();
+        $dayField = $children->offsetGet(2);
+        $monthField = $children->offsetGet(1);
+        $yearField = $children->offsetGet(0);
+        $timeField = $children->offsetGet(3);
+
+        $this->assertInstanceOf( DayOfMonthField::class, $dayField );
+        $this->assertInstanceOf( MonthNumberField::class, $monthField );
+        $this->assertInstanceOf( YearField::class, $yearField );
+        $this->assertInstanceOf( TimeField::class, $timeField );
+
+        $this->assertEquals($dateValue, $field->dataValue() );
 
     }
 }

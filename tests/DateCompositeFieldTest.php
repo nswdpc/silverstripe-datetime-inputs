@@ -3,6 +3,9 @@
 namespace NSWDPC\DateInputs\Tests;
 
 use NSWDPC\DateInputs\DateCompositeField;
+use NSWDPC\DateInputs\DayOfMonthField;
+use NSWDPC\DateInputs\MonthNumberField;
+use NSWDPC\DateInputs\YearField;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Dev\SapphireTest;
@@ -103,15 +106,84 @@ class DateCompositeFieldTest extends SapphireTest {
         // an invalid date
         $dateValue = "2030-11-31";
         $fieldName = "Birthday";
+        $fieldWarning = "TEST_FIELD_WARNING";
         $field = DateCompositeField::create(
             $fieldName,
             'Date of birth',
             $dateValue
         );
+        $field->setFieldWarning($fieldWarning);
 
-        $this->assertNotEmpty(
-            $field->getFieldWarning()
+        $this->assertEquals( $fieldWarning, $field->getFieldWarning() );
+
+    }
+
+    public function testDmyFieldOrdering() {
+        $dateValue = "2030-11-30";
+        $fieldName = "Birthday";
+        $field = DateCompositeField::create(
+            $fieldName,
+            'Date of birth',
+            $dateValue,
+            DateCompositeField::ORDER_DMY,
+            'DMY format example'
         );
+        $children = $field->getChildren();
+        $dayField = $children->offsetGet(0);
+        $monthField = $children->offsetGet(1);
+        $yearField = $children->offsetGet(2);
+
+        $this->assertInstanceOf( DayOfMonthField::class, $dayField );
+        $this->assertInstanceOf( MonthNumberField::class, $monthField );
+        $this->assertInstanceOf( YearField::class, $yearField );
+
+        $this->assertEquals($dateValue, $field->dataValue() );
+
+    }
+
+    public function testMdyFieldOrdering() {
+        $dateValue = "2030-11-30";
+        $fieldName = "Birthday";
+        $field = DateCompositeField::create(
+            $fieldName,
+            'Date of birth',
+            $dateValue,
+            DateCompositeField::ORDER_MDY,
+            'MDY format example'
+        );
+        $children = $field->getChildren();
+        $dayField = $children->offsetGet(1);
+        $monthField = $children->offsetGet(0);
+        $yearField = $children->offsetGet(2);
+
+        $this->assertInstanceOf( DayOfMonthField::class, $dayField );
+        $this->assertInstanceOf( MonthNumberField::class, $monthField );
+        $this->assertInstanceOf( YearField::class, $yearField );
+
+        $this->assertEquals($dateValue, $field->dataValue() );
+
+    }
+
+    public function testYmdFieldOrdering() {
+        $dateValue = "2030-11-30";
+        $fieldName = "Birthday";
+        $field = DateCompositeField::create(
+            $fieldName,
+            'Date of birth',
+            $dateValue,
+            DateCompositeField::ORDER_YMD,
+            'YMD format example'
+        );
+        $children = $field->getChildren();
+        $dayField = $children->offsetGet(2);
+        $monthField = $children->offsetGet(1);
+        $yearField = $children->offsetGet(0);
+
+        $this->assertInstanceOf( DayOfMonthField::class, $dayField );
+        $this->assertInstanceOf( MonthNumberField::class, $monthField );
+        $this->assertInstanceOf( YearField::class, $yearField );
+
+        $this->assertEquals($dateValue, $field->dataValue() );
 
     }
 }
