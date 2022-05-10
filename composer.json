@@ -1,0 +1,33 @@
+{
+    "name": "nswdpc/silverstripe-datetime-inputs",
+    "description": "Date and Datetime composite inputs for Silverstripe framework",
+    "type": "silverstripe-vendormodule",
+    "keywords": [
+        "silverstripe",
+        "nsw",
+        "datetime",
+        "date",
+        "date field", "datetime field"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "James Ellis",
+            "homepage": "https://dpc.nsw.gov.au",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "silverstripe/framework" : "^4",
+        "codem/silverstripe-html5-inputs": "dev-feat-datalist-improvements as 0.1.9999"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7 | ^9.5",
+        "friendsofphp/php-cs-fixer": "^3"
+    },
+    "extra": {
+        "expose": [
+            "client/static"
+        ]
+    }
+}

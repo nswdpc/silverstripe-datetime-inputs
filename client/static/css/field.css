@@ -1,0 +1,21 @@
+/**
+ * Basic styles to lay out DateCompositeField and DatetimeCompositeField
+ * 'inline'
+ */
+
+.field.datecomposite .inputs {
+  column-gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.field.datetimecomposite .inputs {
+  column-gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.field.datecomposite .inputs > div,
+.field.datetimecomposite .inputs > div {
+  margin: 0;
+}
