@@ -62,4 +62,17 @@ class DatetimeCompositeField extends DateCompositeField {
         $value = $value . " " . $timeValue;
         return trim($value);
     }
+
+    /**
+     * Date validation message
+     */
+    protected function getDateValidationErrorMessage($dateValue) : string {
+        return _t(
+            'DateCompositeField.INVALID_DATE_PROVIDED',
+            'The date and time \'{providedDate}\' is not valid. Please check the year, month, day and time values.',
+            [
+                'providedDate' => $dateValue
+            ]
+        );
+    }
 }

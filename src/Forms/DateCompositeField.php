@@ -12,7 +12,7 @@ use SilverStripe\View\Requirements;
 
 /**
  * A composite field made up of 3 text inputs: day, month and year
- * Default field ordering is day-month-year
+ * Default field ordering is year-month-day
  * @author James
  */
 class DateCompositeField extends CompositeField {
@@ -176,7 +176,7 @@ class DateCompositeField extends CompositeField {
             $this->dateValue = array_merge($this->dateValue, $value);
             $this->dateValue['strValue'] = $this->dateValue['year'] . "-" . $this->dateValue['month'] . "-" . $this->dateValue['day'];
             if(!empty($this->dateValue['time'])) {
-                $this->dateValue['strValue'] .= "T" . $this->dateValue['time'];
+                $this->dateValue['strValue'] .= " " . $this->dateValue['time'];
             }
         } else if(is_string($value)) {
             $this->dateValue['strValue'] = $value;
@@ -430,10 +430,7 @@ class DateCompositeField extends CompositeField {
             foreach(['warning_count','error_count'] as $key) {
                 if(isset($lastErrors[$key]) && $lastErrors[$key] > 0) {
                     throw new DateValidationException(
-                        _t(
-                            'DateCompositeField.INVALID_DATETIME_FROM_LASTERRORS',
-                            'The date provided is not valid.'
-                        )
+                        $this->getDateValidationErrorMessage( $value )
                     );
                 }
             }
@@ -469,13 +466,7 @@ class DateCompositeField extends CompositeField {
             $valid = false;
             $validator->validationError(
                 $this->name,
-                _t(
-                    'DateCompositeField.INTERNAL_DATETIME_ERROR',
-                    'The date provided does not appear to be valid.',
-                    [
-                        'error' => $e->getMessage()
-                    ]
-                )
+                $this->getDateValidationErrorMessage( $this->dateValue['strValue'] )
             );
         }
 
@@ -493,5 +484,18 @@ class DateCompositeField extends CompositeField {
         }
 
         return $valid;
+    }
+
+    /**
+     * Date validation message
+     */
+    protected function getDateValidationErrorMessage($dateValue) : string {
+        return _t(
+            'DateCompositeField.INVALID_DATE_PROVIDED',
+            'The date \'{providedDate}\' is not a valid date. Please check the year, month and day values.',
+            [
+                'providedDate' => $dateValue
+            ]
+        );
     }
 }
