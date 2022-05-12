@@ -394,7 +394,7 @@ class DateCompositeField extends CompositeField {
                 _t('DateCompositeField.YEAR_TITLE', 'Year'),
                 $this->dateValue['year']
             )->setDescription(
-                _t('DateCompositeField.YEAR_EXAMPLE', 'Example: 2027')
+                _t('DateCompositeField.YEAR_EXAMPLE', 'The full year')
             );
 
         } else {
