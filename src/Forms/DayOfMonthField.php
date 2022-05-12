@@ -26,7 +26,7 @@ class DayOfMonthField extends NumberField {
         $this->setAttribute(
             'placeholder',
             _t(
-                'NSWDPC\\DateInputs\\MonthField.VALID_DAY_DIRECTION',
+                'NSWDPC\\DateInputs\\DayOfMonthField.VALID_DAY_DIRECTION',
                 "1 - 31"
             )
         );
@@ -57,8 +57,8 @@ class DayOfMonthField extends NumberField {
             $validator->validationError(
                 $this->name,
                 _t(
-                    'NSWDPC\\DateInputs\\MonthField.INVALID_DAY_OF_MONTH',
-                    "Please enter a valid month between 1 and 31"
+                    'NSWDPC\\DateInputs\\DayOfMonthField.INVALID_DAY_OF_MONTH',
+                    "Please enter a valid day between 1 and 31"
                 )
             );
             return false;
