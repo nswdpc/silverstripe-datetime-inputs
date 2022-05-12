@@ -64,11 +64,11 @@ class DatetimeCompositeField extends DateCompositeField {
     }
 
     /**
-     * Date validation message
+     * Date and time validation message
      */
-    protected function getDateValidationErrorMessage($dateValue) : string {
+    public static function getDateValidationErrorMessage($dateValue) : string {
         return _t(
-            'DateCompositeField.INVALID_DATE_PROVIDED',
+            'DateCompositeField.INVALID_DATE_TIME_PROVIDED',
             'The date and time \'{providedDate}\' is not valid. Please check the year, month, day and time values.',
             [
                 'providedDate' => $dateValue

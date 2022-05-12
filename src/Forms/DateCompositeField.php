@@ -430,7 +430,7 @@ class DateCompositeField extends CompositeField {
             foreach(['warning_count','error_count'] as $key) {
                 if(isset($lastErrors[$key]) && $lastErrors[$key] > 0) {
                     throw new DateValidationException(
-                        $this->getDateValidationErrorMessage( $value )
+                        self::getDateValidationErrorMessage( $value )
                     );
                 }
             }
@@ -466,7 +466,7 @@ class DateCompositeField extends CompositeField {
             $valid = false;
             $validator->validationError(
                 $this->name,
-                $this->getDateValidationErrorMessage( $this->dateValue['strValue'] )
+                self::getDateValidationErrorMessage( $this->dateValue['strValue'] )
             );
         }
 
@@ -489,7 +489,7 @@ class DateCompositeField extends CompositeField {
     /**
      * Date validation message
      */
-    protected function getDateValidationErrorMessage($dateValue) : string {
+    public static function getDateValidationErrorMessage($dateValue) : string {
         return _t(
             'DateCompositeField.INVALID_DATE_PROVIDED',
             'The date \'{providedDate}\' is not a valid date. Please check the year, month and day values.',
