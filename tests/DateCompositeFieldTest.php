@@ -186,4 +186,68 @@ class DateCompositeFieldTest extends SapphireTest {
         $this->assertEquals($dateValue, $field->dataValue() );
 
     }
+
+    public function testMinMaxYear() {
+        $maxYear = date('Y');
+        $year = $maxYear + 1;
+        $dateValue = "{$year}-11-30";
+        $fieldName = "Birthday";
+        $field = DateCompositeField::create(
+            $fieldName,
+            'Date of birth',
+            $dateValue,
+            DateCompositeField::ORDER_YMD,
+            'YMD format example'
+        );
+
+        $min = 1990;
+        $max = date('Y');
+        $field->setMinMaxYear($min, $max);
+
+        $this->assertEquals($min, $field->getMinYear() );
+        $this->assertEquals($max, $field->getMaxYear() );
+
+    }
+
+    public function testMinYear() {
+        $maxYear = date('Y');
+        $year = $maxYear + 1;
+        $dateValue = "{$year}-11-30";
+        $fieldName = "Birthday";
+        $field = DateCompositeField::create(
+            $fieldName,
+            'Date of birth',
+            $dateValue,
+            DateCompositeField::ORDER_YMD,
+            'YMD format example'
+        );
+
+        $min = 1990;
+        $max = null;
+        $field->setMinMaxYear($min, $max);
+        $this->assertEquals($min, $field->getMinYear() );
+        $this->assertEquals(null, $field->getMaxYear() );
+
+    }
+
+    public function testMaxYear() {
+        $maxYear = date('Y');
+        $year = $maxYear + 1;
+        $dateValue = "{$year}-11-30";
+        $fieldName = "Birthday";
+        $field = DateCompositeField::create(
+            $fieldName,
+            'Date of birth',
+            $dateValue,
+            DateCompositeField::ORDER_YMD,
+            'YMD format example'
+        );
+
+        $min = null;
+        $max = $maxYear;
+        $field->setMinMaxYear($min, $max);
+        $this->assertEquals(null, $field->getMinYear() );
+        $this->assertEquals($maxYear, $field->getMaxYear() );
+
+    }
 }

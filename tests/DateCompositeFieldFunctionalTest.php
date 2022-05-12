@@ -44,6 +44,33 @@ class DateCompositeFieldFunctionalTest extends FunctionalTest {
         $this->assertTrue(strpos($postSubmit->getBody(), "TEST_DATEINPUT_OK_{$year}-{$month}-{$day}") !== false);
     }
 
+    public function testInvalidMinMaxYearSubmission() {
+        $page = $this->get( $this->getTestPath() );
+        $year = '3001';// > 3000
+        $month = '10';
+        $day = '30';
+        $postSubmit = $this->submitForm(
+            'Form_DateCompositeTestForm',
+            'action_doTestDate',
+            [
+                'TestDate[year]' => $year,
+                'TestDate[month]' => $month,
+                'TestDate[day]' => $day
+            ]
+        );
+        $this->assertEquals(200, $postSubmit->getStatusCode());
+        $message = _t(
+            'NSWDPC\\DateInputs\\YearField.YEAR_OUT_OF_RANGE',
+            "Please enter a year between {minYear} and {maxYear}",
+            [
+                'minYear' => 1990,
+                'maxYear' => 3000
+            ]
+        );
+
+        $this->assertTrue(strpos($postSubmit->getBody(), $message) !== false);
+    }
+
     public function testInvalidDateSubmission() {
         $page = $this->get( $this->getTestPath() );
         $year = '2028';

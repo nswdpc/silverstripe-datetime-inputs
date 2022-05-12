@@ -283,6 +283,46 @@ class DateCompositeField extends CompositeField {
     }
 
     /**
+     * Set minimum allowed year value
+     * @param int|null $minYear
+     * @param int|null $maxYear
+     */
+    public function setMinMaxYear(int $minYear = null, int $maxYear = null) : self {
+        if($this->yearField) {
+            $this->yearField->setAttribute('min', $minYear)->setAttribute('max', $maxYear);
+        }
+        return $this;
+    }
+
+    /**
+     * Get minimum allowed year value
+     */
+    public function getMinYear() : ?int {
+        $val = null;
+        if($this->yearField) {
+            $val = $this->yearField->getAttribute('min');
+            if(!is_null($val)) {
+                $val = intval($val);
+            }
+        }
+        return $val;
+    }
+
+    /**
+     * Get maximum allowed year value
+     */
+    public function getMaxYear() : ?int {
+        $val = null;
+        if($this->yearField) {
+            $val = $this->yearField->getAttribute('max');
+            if(!is_null($val)) {
+                $val = intval($val);
+            }
+        }
+        return $val;
+    }
+
+    /**
      * Return whether child fields exist
      */
     public function hasFields() : bool {

@@ -58,6 +58,10 @@ class DateInputTestController extends Controller implements TestOnly {
             'Test date'
         );
 
+        $min = 1990;
+        $max = 3000;
+        $dateCompositeField->setMinMaxYear($min, $max);
+
         $form = Form::create(
             $this,
             "DateCompositeTestForm",

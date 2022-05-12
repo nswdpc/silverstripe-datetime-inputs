@@ -45,8 +45,55 @@ class YearField extends NumberField {
             return false;
         }
 
-        return true;
-
+        // Check for valid month
+        $valid = true;
+        $minYear = $this->getAttribute('min');
+        $maxYear = $this->getAttribute('max');
+        if($minYear && $maxYear) {
+            if ($this->value < $minYear || $this->value > $maxYear) {
+                $validator->validationError(
+                    $this->name,
+                    _t(
+                        'NSWDPC\\DateInputs\\YearField.YEAR_OUT_OF_RANGE',
+                        "Please enter a year between {minYear} and {maxYear}",
+                        [
+                            'minYear' => $minYear,
+                            'maxYear' => $maxYear
+                        ]
+                    )
+                );
+                $valid = false;
+            }
+        } else if($minYear) {
+            if ($this->value < $minYear) {
+                $validator->validationError(
+                    $this->name,
+                    _t(
+                        'NSWDPC\\DateInputs\\YearField.YEAR_OUT_OF_RANGE',
+                        "Please enter a year equal to or after {minYear}",
+                        [
+                            'minYear' => $minYear
+                        ]
+                    )
+                );
+                $valid = false;
+            }
+        } else if($maxYear) {
+            if ($this->value > $maxYear) {
+                $validator->validationError(
+                    $this->name,
+                    _t(
+                        'NSWDPC\\DateInputs\\YearField.YEAR_OUT_OF_RANGE',
+                        "Please enter a year equal to or before {maxYear}",
+                        [
+                            'maxYear' => $maxYear
+                        ]
+                    )
+                );
+                $valid = false;
+            }
+        }
+        return $valid;
     }
 
 }
