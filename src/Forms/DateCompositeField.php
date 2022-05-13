@@ -335,6 +335,18 @@ class DateCompositeField extends CompositeField {
     }
 
     /**
+     * @inheritdoc
+     * Set child fields to be readonly as well
+     */
+    public function setReadonly($readonly)
+    {
+        foreach($this->children as $child) {
+            $child->setReadonly($readonly);
+        }
+        return parent::setReadonly($readonly);
+    }
+
+    /**
      * Return whether child fields exist
      */
     public function hasFields() : bool {
