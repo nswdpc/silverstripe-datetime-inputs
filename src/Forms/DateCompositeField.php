@@ -323,6 +323,18 @@ class DateCompositeField extends CompositeField {
     }
 
     /**
+     * @inheritdoc
+     * Set child fields to be disabled as well
+     */
+    public function setDisabled($disabled)
+    {
+        foreach($this->children as $child) {
+            $child->setDisabled($disabled);
+        }
+        return parent::setDisabled($disabled);
+    }
+
+    /**
      * Return whether child fields exist
      */
     public function hasFields() : bool {
