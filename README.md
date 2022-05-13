@@ -1,6 +1,6 @@
 # Date and Datetime composite inputs for Silverstripe
 
-Collect a date or datetime input via single composite field made up of relevant day, month, year, hour and minute inputs. The parent field is a standard composite field with child fields submitting data within the form submission for validation.
+Collect a date or datetime input via single composite field made up of relevant day, month, year and time inputs. The parent field is a standard composite field with child fields submitting data within the form submission for validation.
 
 Child input fields are standard numeric inputs. The time field is a [time input](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/time).
 
