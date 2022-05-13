@@ -54,6 +54,33 @@ When the DateCompositeField is set as a required field in a validator, all child
 
 You can provide some information about invalid date value(s) by using the `setFieldWarning` method.
 
+## Setting attributes
+
+Setting disabled and readonly attributes on the field will set the same on all child fields.
+
+```php
+
+use NSWDPC\DateInputs\DateCompositeField;
+
+$dateOfBirthField = DateCompositeField::create(
+    'DateOfBirth',
+    _t('app.DateOfBirth','Date of Birth')
+)->setDescription(
+    _t(
+        'app.DateOfBirth_Note',
+        'Enter your date of birth'
+    )
+)->setFormatExample(
+    _t(
+        'app.DateOfBirth_Example',
+        'Example: If your date of birth is 12th November 1990, enter 1990 11 12.'
+    )
+)->setAttribute('required','required')
+->setMinMaxYear(null, date('Y')) // set max attribute on year field
+->setIsDateOfBirth(true)
+->setDisabled(true); // set disabled attribute on all child fields
+```
+
 ## Templating
 
 The templates provided are basic and you can replace these in your own theme using the standard Silverstripe naming process.
