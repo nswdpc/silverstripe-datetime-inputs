@@ -1,0 +1,19 @@
+/**
+ * Admin CSS for fields
+ */
+.field.datecomposite .inputs {
+  column-gap: 0;
+}
+
+.field.datetimecomposite .inputs {
+  column-gap: 0;
+}
+
+.field.datecomposite .inputs input.year,
+.field.datetimecomposite .inputs input.year,
+.field.datecomposite .inputs input.dayofmonth,
+.field.datetimecomposite .inputs input.dayofmonth,
+.field.datecomposite .inputs input.monthnumber,
+.field.datetimecomposite .inputs input.monthnumber {
+  width : 95%;
+}

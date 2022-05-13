@@ -31,6 +31,14 @@ class YearField extends NumberField {
 
     /**
      * @inheritdoc
+     */
+    public function Type()
+    {
+        return 'year text';
+    }
+
+    /**
+     * @inheritdoc
      * The parent field handles validation for invalid complete dates
      */
     public function validate($validator)

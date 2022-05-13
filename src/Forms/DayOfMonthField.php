@@ -38,6 +38,14 @@ class DayOfMonthField extends NumberField {
 
     /**
      * @inheritdoc
+     */
+    public function Type()
+    {
+        return 'dayofmonth text';
+    }
+
+    /**
+     * @inheritdoc
      * The parent field handles validation for invalid complete dates
      */
     public function validate($validator)

@@ -12,4 +12,12 @@ class TimeField extends BaseTimeField {
 
     use DateInputChild;
 
+    /**
+     * @inheritdoc
+     */
+    public function Type()
+    {
+        return 'time text';
+    }
+
 }

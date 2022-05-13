@@ -2,9 +2,12 @@
 
 namespace NSWDPC\DateInputs;
 
+use SilverStripe\Admin\LeftAndMain;
+use SilverStripe\Control\Controller;
 use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\Fieldlist;
 use SilverStripe\Forms\FormField;
+use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\ORM\DataObjectInterface;
 use SilverStripe\ORM\ValidationException;
 use SilverStripe\ORM\ValidationResult;
@@ -66,11 +69,6 @@ class DateCompositeField extends CompositeField {
      * @var string
      */
     protected $formatExampleValue = '';
-
-    /**
-     * @inheritdoc
-     */
-    protected $fieldHolderTemplate = 'DateCompositeField_holder.ss';
 
     /**
      * @var string
@@ -447,6 +445,19 @@ class DateCompositeField extends CompositeField {
     }
 
     /**
+     * @return string
+     */
+    public function getFieldHolderTemplate()
+    {
+        $controller = Controller::curr();
+        if($controller instanceof LeftAndMain) {
+            return "NSWDPC/DateInputs/Admin/DateCompositeField_holder";
+        } else {
+            return "NSWDPC/DateInputs/DateCompositeField_holder";
+        }
+    }
+
+    /**
      * @inheritdoc
      */
     public function FieldHolder($properties = [])
@@ -455,6 +466,13 @@ class DateCompositeField extends CompositeField {
             'nswdpc/silverstripe-datetime-inputs:client/static/css/field.css',
             'screen'
         );
+        $controller = Controller::curr();
+        if($controller instanceof LeftAndMain) {
+            Requirements::css(
+                'nswdpc/silverstripe-datetime-inputs:client/static/css/admin.css',
+                'screen'
+            );
+        }
         return parent::FieldHolder($properties);
     }
 
@@ -538,4 +556,5 @@ class DateCompositeField extends CompositeField {
             ]
         );
     }
+
 }
