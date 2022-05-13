@@ -616,6 +616,7 @@ class DateCompositeField extends CompositeField {
      */
     public function setHTML5($is) {
         // NOOP
+        return $this;
     }
 
     /**
