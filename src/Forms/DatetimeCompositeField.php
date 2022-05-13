@@ -4,7 +4,7 @@ namespace NSWDPC\DateInputs;
 
 use SilverStripe\Forms\Fieldlist;
 use SilverStripe\ORM\FieldType\DBField;
-use SilverStripe\ORM\FieldType\DBDate;
+use SilverStripe\ORM\FieldType\DBDatetime;
 
 /**
  * A composite field for date and time input
