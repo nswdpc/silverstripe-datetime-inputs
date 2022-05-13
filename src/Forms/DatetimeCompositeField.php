@@ -3,6 +3,8 @@
 namespace NSWDPC\DateInputs;
 
 use SilverStripe\Forms\Fieldlist;
+use SilverStripe\ORM\FieldType\DBField;
+use SilverStripe\ORM\FieldType\DBDate;
 
 /**
  * A composite field for date and time input
@@ -61,6 +63,18 @@ class DatetimeCompositeField extends DateCompositeField {
         $timeValue = $this->timeField->dataValue();
         $value = $value . " " . $timeValue;
         return trim($value);
+    }
+
+    /**
+     * Return formatted representation of the current field value
+     */
+    public function getFormattedValue() : ?string {
+        $value = $this->Value();
+        if($value) {
+            $dbField = DBField::create_field(DBDatetime::class, $value);
+            $value = $dbField->FormatFromSettings();
+        }
+        return $value;
     }
 
     /**

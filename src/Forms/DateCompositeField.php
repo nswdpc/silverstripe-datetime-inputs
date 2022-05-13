@@ -8,6 +8,8 @@ use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\Fieldlist;
 use SilverStripe\Forms\FormField;
 use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\ORM\FieldType\DBField;
+use SilverStripe\ORM\FieldType\DBDate;
 use SilverStripe\ORM\DataObjectInterface;
 use SilverStripe\ORM\ValidationException;
 use SilverStripe\ORM\ValidationResult;
@@ -558,14 +560,27 @@ class DateCompositeField extends CompositeField {
     }
 
     /**
+     * Return formatted representation of the current field value
+     */
+    public function getFormattedValue() : ?string {
+        $value = $this->Value();
+        if($value) {
+            $dbField = DBField::create_field(DBDate::class, $value);
+            $value = $dbField->FormatFromSettings();
+        }
+        return $value;
+    }
+
+    /**
      * The readonly version of this field
      */
     public function performReadonlyTransformation()
     {
+        $value = $this->getFormattedValue();
         $field = ReadonlyField::create(
             $this->name,
             $this->title,
-            $this->dataValue()
+            $value
         );
         $field->setDescription( $this->getDescription() );
         $field->setRightTitle( $this->RightTitle() );
