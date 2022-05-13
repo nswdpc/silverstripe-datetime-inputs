@@ -557,4 +557,18 @@ class DateCompositeField extends CompositeField {
         );
     }
 
+    /**
+     * The readonly version of this field
+     */
+    public function performReadonlyTransformation()
+    {
+        $field = ReadonlyField::create(
+            $this->name,
+            $this->title,
+            $this->dataValue()
+        );
+        $field->setDescription( $this->getDescription() );
+        $field->setRightTitle( $this->RightTitle() );
+        return $field;
+    }
 }
