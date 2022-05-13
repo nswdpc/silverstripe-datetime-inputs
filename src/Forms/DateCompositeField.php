@@ -625,4 +625,22 @@ class DateCompositeField extends CompositeField {
     public function getHTML5() {
         return true;
     }
+
+    /**
+     * Set whether the field represents a date of birth
+     */
+    public function setIsDateOfBirth($is) {
+        if($this->hasFields()) {
+            if($is) {
+                $this->yearField->setAttribute('autocomplete','bday-year');
+                $this->monthField->setAttribute('autocomplete','bday-month');
+                $this->dayField->setAttribute('autocomplete','bday-day');
+            } else {
+                $this->yearField->setAttribute('autocomplete','');
+                $this->monthField->setAttribute('autocomplete','');
+                $this->dayField->setAttribute('autocomplete','');
+            }
+        }
+        return $this;
+    }
 }
