@@ -571,4 +571,18 @@ class DateCompositeField extends CompositeField {
         $field->setRightTitle( $this->RightTitle() );
         return $field;
     }
+
+    /**
+     * Compat method to support fields using set/get html5
+     */
+    public function setHTML5($is) {
+        // NOOP
+    }
+
+    /**
+     * Compat method to support fields using set/get html5
+     */
+    public function getHTML5() {
+        return true;
+    }
 }
