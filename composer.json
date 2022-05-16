@@ -19,7 +19,7 @@
     ],
     "require": {
         "silverstripe/framework" : "^4",
-        "codem/silverstripe-html5-inputs": "dev-feat-datalist-improvements as 0.1.9999"
+        "codem/silverstripe-html5-inputs": "^0.1.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.7 | ^9.5",
