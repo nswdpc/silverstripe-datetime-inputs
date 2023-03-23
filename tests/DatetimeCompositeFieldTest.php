@@ -11,8 +11,8 @@ use NSWDPC\DateInputs\TimeField;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Dev\SapphireTest;
-use Silverstripe\Forms\FieldList;
-use Silverstripe\Forms\Form;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\Form;
 
 /**
  * Test the datetime field
