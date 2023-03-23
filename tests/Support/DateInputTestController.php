@@ -17,15 +17,24 @@ use SilverStripe\View\SSViewer;
  */
 class DateInputTestController extends Controller implements TestOnly {
 
+    /**
+     * @config
+     */
     private static $allowed_actions = [
         'DateCompositeTestForm',
         'doTestDate'
     ];
 
+    /**
+     * @config
+     */
     private static $url_segment = "DateInputTestController";
 
     protected $template = 'BlankPage';
 
+    /**
+     * @config
+     */
     private static $url_handlers = [
         '$Action//$ID/$OtherID' => "handleAction",
     ];

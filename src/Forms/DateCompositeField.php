@@ -5,7 +5,7 @@ namespace NSWDPC\DateInputs;
 use SilverStripe\Admin\LeftAndMain;
 use SilverStripe\Control\Controller;
 use SilverStripe\Forms\CompositeField;
-use SilverStripe\Forms\Fieldlist;
+use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\FormField;
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\ORM\FieldType\DBField;
@@ -43,17 +43,17 @@ class DateCompositeField extends CompositeField {
     protected $fieldOrder = self::ORDER_YMD;
 
     /**
-     * @var NumberField
+     * @var \Codem\Utilities\HTML5\NumberField
      */
     protected $dayField;
 
     /**
-     * @var NumberField
+     * @var \Codem\Utilities\HTML5\NumberField
      */
     protected $monthField;
 
     /**
-     * @var NumberField
+     * @var \Codem\Utilities\HTML5\NumberField
      */
     protected $yearField;
 
@@ -75,7 +75,7 @@ class DateCompositeField extends CompositeField {
     /**
      * @var string
      */
-    protected $fieldWarning = '';
+    protected $fieldWarningMessage = '';
 
     /**
      * @var bool
@@ -133,7 +133,7 @@ class DateCompositeField extends CompositeField {
 
     /**
      * Parse a date time value into parts via named capture groups
-     * @param string input value that may or may not be a valid date
+     * @param string $inputValue input value that may or may not be a valid date
      */
     public static function parseDateTime(string $inputValue) : array {
         $pattern = "/" . static::getParserPattern() . "/";
@@ -152,7 +152,7 @@ class DateCompositeField extends CompositeField {
     public function setSubmittedValue($value, $data = null)
     {
         $this->isSubmittingValue = true;
-        parent::setSubmittedValue($value, $data);
+        return parent::setSubmittedValue($value, $data);
     }
 
     /**
@@ -523,10 +523,7 @@ class DateCompositeField extends CompositeField {
     }
 
     /**
-     * Validate this field
-     *
-     * @param Validator $validator
-     * @return bool
+     * @inheritdoc
      */
     public function validate($validator)
     {

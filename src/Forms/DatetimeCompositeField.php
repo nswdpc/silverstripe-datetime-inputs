@@ -2,7 +2,7 @@
 
 namespace NSWDPC\DateInputs;
 
-use SilverStripe\Forms\Fieldlist;
+use SilverStripe\Forms\FieldList;
 use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\ORM\FieldType\DBDatetime;
 
@@ -13,7 +13,7 @@ use SilverStripe\ORM\FieldType\DBDatetime;
 class DatetimeCompositeField extends DateCompositeField {
 
     /**
-     * @var TimeField
+     * @var \NSWDPC\DateInputs\TimeField
      */
     protected $timeField;
 
@@ -31,7 +31,7 @@ class DatetimeCompositeField extends DateCompositeField {
      * Push time input into composite
      * @inheritdoc
      */
-    public function buildDateTimeFields() : Fieldlist {
+    public function buildDateTimeFields() : FieldList {
 
         $this->children = parent::buildDateTimeFields();
 

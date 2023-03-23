@@ -9,8 +9,8 @@ use NSWDPC\DateInputs\YearField;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Dev\SapphireTest;
-use Silverstripe\Forms\FieldList;
-use Silverstripe\Forms\Form;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\Form;
 use SilverStripe\Forms\RequiredFields;
 
 /**
