@@ -87,7 +87,7 @@ class DateCompositeFieldFunctionalTest extends FunctionalTest {
         );
         $this->assertEquals(200, $postSubmit->getStatusCode());
         $message = DateCompositeField::getDateValidationErrorMessage("{$year}-{$month}-{$day}");
-        $this->assertTrue(strpos($postSubmit->getBody(), $message) !== false);
+        $this->assertTrue(strpos($postSubmit->getBody(), htmlspecialchars($message)) !== false);
     }
 
     public function testInValidDayOfMonthSubmission() {
@@ -140,6 +140,7 @@ class DateCompositeFieldFunctionalTest extends FunctionalTest {
             'Form_DateCompositeTestForm',
             'action_doTestDate'
         );
-        $this->assertTrue(strpos($postSubmit->getBody(), '"Test date" is required') !== false);
+        $message = '"Test date" is required';
+        $this->assertTrue(strpos($postSubmit->getBody(), htmlspecialchars($message)) !== false);
     }
 }
