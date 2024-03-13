@@ -250,4 +250,30 @@ class DateCompositeFieldTest extends SapphireTest {
         $this->assertEquals($maxYear, $field->getMaxYear() );
 
     }
+
+    public function testHandleEmptyValue() {
+        $field = DateCompositeField::create(
+            'testdate',
+            'test date',
+            null
+        );
+        $empty = [];
+        $field->setValue($empty);
+        $this->assertEquals("", $field->dataValue());
+    }
+
+
+
+    public function testHandlePartialValue() {
+        $field = DateCompositeField::create(
+            'testdate',
+            'test date',
+            null
+        );
+        $partial = [
+            'year' => '2010'
+        ];
+        $field->setValue($partial);
+        $this->assertEquals("", $field->dataValue());
+    }
 }
