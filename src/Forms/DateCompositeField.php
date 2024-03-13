@@ -124,6 +124,46 @@ class DateCompositeField extends CompositeField {
     }
 
     /**
+     * Helper method to get the key's value as a string from the given array
+     * is the key is not set the value returned is an empty string
+     */
+    public static function getStringValueFromArray(array $dateValue, string $key) : string {
+        return isset($dateValue[$key]) ? trim(strval($dateValue[$key])) : '';
+    }
+
+    /**
+     * Helper method to format the $dateValue provided and return it as the $format requested
+     * $format should be a format understood by \DateTime
+     * The $dateValue must have a year, month and day value, with those keys. Optional time value supported.
+     * @throws \InvalidArgumentException
+     */
+    public static function formatDateValue(array $dateValue, string $format = "Y-m-d") : string {
+        $date = [];
+        $date[] = static::getStringValueFromArray($dateValue, 'year');
+        $date[] = static::getStringValueFromArray($dateValue, 'month');
+        $date[] = static::getStringValueFromArray($dateValue, 'day');
+        $date = array_filter($date);// remove empties
+        if(count($date) != 3) {
+            throw new \InvalidArgumentException("Invalid dateValue passed to formatDateValue - requires a year, month and day value as strings");
+        }
+        $dateStr = implode("-", $date);
+        $timeStr = static::getStringValueFromArray($dateValue, 'time');
+        if($timeStr) {
+            $dateStr .= " " . $timeStr;
+        }
+
+        try {
+            $dt = new \DateTime($dateStr);
+            $dtFormatted = $dt->format($format);
+            return $dtFormatted;
+        } catch(\Exception $e) {
+            // invalid format or date string
+        }
+
+        throw new \InvalidArgumentException("Invalid dateValue or format ({$format}) passed to formatDateValue");
+    }
+
+    /**
      * @return string
      */
     protected static function getParserPattern() : string {
