@@ -171,12 +171,23 @@ class DateCompositeField extends CompositeField {
         ];
 
         if(is_array($value)) {
-            // submitted value
-            $this->isSubmittingValue = true;
-            $this->dateValue = array_merge($this->dateValue, $value);
-            $this->dateValue['strValue'] = $this->dateValue['year'] . "-" . $this->dateValue['month'] . "-" . $this->dateValue['day'];
-            if(!empty($this->dateValue['time'])) {
-                $this->dateValue['strValue'] .= " " . $this->dateValue['time'];
+            // check if value contains data
+            $value = array_filter(
+                $value,
+                function($v, $k) {
+                    $v = is_string($v) ? trim($v) : '';
+                    return $v !== '';
+                },
+                ARRAY_FILTER_USE_BOTH
+            );
+            if(count($value) > 0) {
+                // submitted value
+                $this->isSubmittingValue = true;
+                $this->dateValue = array_merge($this->dateValue, $value);
+                $this->dateValue['strValue'] = $this->dateValue['year'] . "-" . $this->dateValue['month'] . "-" . $this->dateValue['day'];
+                if(!empty($this->dateValue['time'])) {
+                    $this->dateValue['strValue'] .= " " . $this->dateValue['time'];
+                }
             }
         } else if(is_string($value)) {
             $this->dateValue['strValue'] = $value;
@@ -508,6 +519,10 @@ class DateCompositeField extends CompositeField {
      * @throws DateValidationException
      */
     protected function checkProvidedDateTime(string $value) : bool {
+        if($value === '') {
+            // empty value provided
+            return true;
+        }
         $check = new \DateTime($value);
         $lastErrors = $check->getLastErrors();
         if(!empty($lastErrors)) {
