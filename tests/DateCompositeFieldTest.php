@@ -251,6 +251,43 @@ class DateCompositeFieldTest extends SapphireTest {
 
     }
 
+    public function testformatDateValueValid() {
+        $date = [
+            'year' => 2010,
+            'month' => 4,
+            'day' => 24,
+        ];
+        $value = DateCompositeField::formatDateValue($date, "Ymd");
+        $this->assertEquals('20100424', $value);
+    }
+
+    public function testformatDateValueAmbiguous() {
+        try {
+            $date = [
+                'year' => 2010,
+                'month' => 4.1,
+                'day' => 24,
+            ];
+            $value = DateCompositeField::formatDateValue($date, "Ymd");
+            $this->assertFalse(true, 'Result should be an InvalidArgumentException');
+        } catch (\Exception $e) {
+            $this->assertInstanceof(\InvalidArgumentException::class, $e);
+        }
+    }
+
+    public function testformatDateValueInvalid() {
+        try {
+            $date = [
+                'month' => 4,
+                'day' => 24,
+            ];
+            $value = DateCompositeField::formatDateValue($date, "Ymd");
+            $this->assertFalse(true, 'Result should be an InvalidArgumentException');
+        } catch (\Exception $e) {
+            $this->assertInstanceof(\InvalidArgumentException::class, $e);
+        }
+    }
+
     public function testHandleEmptyValue() {
         $field = DateCompositeField::create(
             'testdate',
@@ -261,8 +298,6 @@ class DateCompositeFieldTest extends SapphireTest {
         $field->setValue($empty);
         $this->assertEquals("", $field->dataValue());
     }
-
-
 
     public function testHandlePartialValue() {
         $field = DateCompositeField::create(
