@@ -22,13 +22,15 @@ class MonthNumberField extends NumberField {
         $this->setAttribute('max', 12);
         $this->setAttribute('step', 1);
         $this->setAttribute('inputmode', 'numeric');
-        $this->setAttribute(
-            'placeholder',
-            _t(
-                'NSWDPC\\DateInputs\\MonthField.VALID_MONTH_DIRECTION',
-                "1 (Jan) - 12 (Dec)"
-            )
-        );
+        if(DateCompositeField::config()->get('child_placeholders')) {
+            $this->setAttribute(
+                'placeholder',
+                _t(
+                    'NSWDPC\\DateInputs\\MonthField.VALID_MONTH_DIRECTION',
+                    "1 (Jan) - 12 (Dec)"
+                )
+            );
+        }
 
         $this->setDatalist(
             $this->getMonthDataList()

@@ -20,13 +20,15 @@ class YearField extends NumberField {
         parent::__construct($name, $title, $value, $maxLength, $form);
         $this->setAttribute('inputmode', 'numeric');
         $this->setAttribute('step', 1);
-        $this->setAttribute(
-            'placeholder',
-            _t(
-                'NSWDPC\\DateInputs\\MonthField.VALID_YEAR_DIRECTION',
-                "Enter a year"
-            )
-        );
+        if(DateCompositeField::config()->get('child_placeholders')) {
+            $this->setAttribute(
+                'placeholder',
+                _t(
+                    'NSWDPC\\DateInputs\\MonthField.VALID_YEAR_DIRECTION',
+                    "Enter a year"
+                )
+            );
+        }
     }
 
     /**
