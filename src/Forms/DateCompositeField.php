@@ -695,4 +695,16 @@ class DateCompositeField extends CompositeField {
         }
         return $this;
     }
+
+    /**
+     * Hide placeholders
+     */
+    public function hidePlaceholders() : self {
+        if($this->hasFields()) {
+            $this->yearField->setAttribute('placeholder', null);
+            $this->monthField->setAttribute('placeholder', null);
+            $this->dayField->setAttribute('placeholder', null);
+        }
+        return $this;
+    }
 }
