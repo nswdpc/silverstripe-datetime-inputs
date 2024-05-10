@@ -74,7 +74,8 @@ class DatetimeCompositeFieldFunctionalTest extends FunctionalTest {
             'Form_DatetimeCompositeTestForm',
             'action_doTestDate'
         );
-        $this->assertTrue(strpos($postSubmit->getBody(), '"Test date" is required') !== false);
+        $message = '"Test date" is required';
+        $this->assertTrue(strpos($postSubmit->getBody(), htmlspecialchars($message)) !== false);
     }
 
 }
