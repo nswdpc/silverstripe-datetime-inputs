@@ -124,6 +124,46 @@ class DateCompositeField extends CompositeField {
     }
 
     /**
+     * Helper method to get the key's value as a string from the given array
+     * is the key is not set the value returned is an empty string
+     */
+    public static function getStringValueFromArray(array $dateValue, string $key) : string {
+        return isset($dateValue[$key]) ? trim(strval($dateValue[$key])) : '';
+    }
+
+    /**
+     * Helper method to format the $dateValue provided and return it as the $format requested
+     * $format should be a format understood by \DateTime
+     * The $dateValue must have a year, month and day value, with those keys. Optional time value supported.
+     * @throws \InvalidArgumentException
+     */
+    public static function formatDateValue(array $dateValue, string $format = "Y-m-d") : string {
+        $date = [];
+        $date[] = static::getStringValueFromArray($dateValue, 'year');
+        $date[] = static::getStringValueFromArray($dateValue, 'month');
+        $date[] = static::getStringValueFromArray($dateValue, 'day');
+        $date = array_filter($date);// remove empties
+        if(count($date) != 3) {
+            throw new \InvalidArgumentException("Invalid dateValue passed to formatDateValue - requires a year, month and day value as strings");
+        }
+        $dateStr = implode("-", $date);
+        $timeStr = static::getStringValueFromArray($dateValue, 'time');
+        if($timeStr) {
+            $dateStr .= " " . $timeStr;
+        }
+
+        try {
+            $dt = new \DateTime($dateStr);
+            $dtFormatted = $dt->format($format);
+            return $dtFormatted;
+        } catch(\Exception $e) {
+            // invalid format or date string
+        }
+
+        throw new \InvalidArgumentException("Invalid dateValue or format ({$format}) passed to formatDateValue");
+    }
+
+    /**
      * @return string
      */
     protected static function getParserPattern() : string {
@@ -171,12 +211,23 @@ class DateCompositeField extends CompositeField {
         ];
 
         if(is_array($value)) {
-            // submitted value
-            $this->isSubmittingValue = true;
-            $this->dateValue = array_merge($this->dateValue, $value);
-            $this->dateValue['strValue'] = $this->dateValue['year'] . "-" . $this->dateValue['month'] . "-" . $this->dateValue['day'];
-            if(!empty($this->dateValue['time'])) {
-                $this->dateValue['strValue'] .= " " . $this->dateValue['time'];
+            // check if value contains data
+            $value = array_filter(
+                $value,
+                function($v, $k) {
+                    $v = is_string($v) ? trim($v) : '';
+                    return $v !== '';
+                },
+                ARRAY_FILTER_USE_BOTH
+            );
+            if(count($value) > 0) {
+                // submitted value
+                $this->isSubmittingValue = true;
+                $this->dateValue = array_merge($this->dateValue, $value);
+                $this->dateValue['strValue'] = $this->dateValue['year'] . "-" . $this->dateValue['month'] . "-" . $this->dateValue['day'];
+                if(!empty($this->dateValue['time'])) {
+                    $this->dateValue['strValue'] .= " " . $this->dateValue['time'];
+                }
             }
         } else if(is_string($value)) {
             $this->dateValue['strValue'] = $value;
@@ -508,6 +559,10 @@ class DateCompositeField extends CompositeField {
      * @throws DateValidationException
      */
     protected function checkProvidedDateTime(string $value) : bool {
+        if($value === '') {
+            // empty value provided
+            return true;
+        }
         $check = new \DateTime($value);
         $lastErrors = $check->getLastErrors();
         if(!empty($lastErrors)) {
