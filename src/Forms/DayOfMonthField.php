@@ -23,15 +23,13 @@ class DayOfMonthField extends NumberField {
         $this->setAttribute('step', 1);
         $this->setAttribute('inputmode', 'numeric');
         $this->setAttribute('autocomplete', 'off');
-        if(DateCompositeField::config()->get('child_placeholders')) {
-            $this->setAttribute(
-                'placeholder',
-                _t(
-                    'NSWDPC\\DateInputs\\DayOfMonthField.VALID_DAY_DIRECTION',
-                    "1 - 31"
-                )
-            );
-        }
+        $this->setAttribute(
+            'placeholder',
+            _t(
+                'NSWDPC\\DateInputs\\DayOfMonthField.VALID_DAY_DIRECTION',
+                "1 - 31"
+            )
+        );
 
         $this->setDatalist(
             $this->getDayDataList()

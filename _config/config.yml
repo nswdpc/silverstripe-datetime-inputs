@@ -1,5 +1,3 @@
 ---
 Name: nswdpc-datetime-inputs
 ---
-NSWDPC\DateInputs\DateCompositeField:
-  child_placeholders: false

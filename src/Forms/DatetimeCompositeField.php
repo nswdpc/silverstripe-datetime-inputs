@@ -89,4 +89,15 @@ class DatetimeCompositeField extends DateCompositeField {
             ]
         );
     }
+
+    /**
+     * Hide placeholders
+     */
+    public function hidePlaceholders() : self {
+        if($this->hasFields()) {
+            parent::hidePlaceholders();
+            $this->timeField->setAttribute('placeholder', null);
+        }
+        return $this;
+    }
 }

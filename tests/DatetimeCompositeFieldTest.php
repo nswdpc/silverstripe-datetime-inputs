@@ -198,4 +198,32 @@ class DatetimeCompositeFieldTest extends SapphireTest {
         $this->assertEquals($dateValue, $field->dataValue() );
 
     }
+
+    public function testPlaceholders() {
+        $field = DatetimeCompositeField::create(
+            'placeholders',
+            'test date',
+            null
+        );
+        $children = $field->getChildren();
+        foreach($children as $childField) {
+            if($childField instanceof TimeField) {
+                // skip, does not have placeholder
+                continue;
+            }
+            $this->assertNotNull($childField->getAttribute('placeholder'));
+        }
+    }
+
+    public function testNoPlaceholders() {
+        $field = DatetimeCompositeField::create(
+            'hideplaceholders',
+            'test date',
+            null
+        )->hidePlaceholders();
+        $children = $field->getChildren();
+        foreach($children as $childField) {
+            $this->assertNull($childField->getAttribute('placeholder'));
+        }
+    }
 }
