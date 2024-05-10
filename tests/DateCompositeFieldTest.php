@@ -311,4 +311,28 @@ class DateCompositeFieldTest extends SapphireTest {
         $field->setValue($partial);
         $this->assertEquals("", $field->dataValue());
     }
+
+    public function testPlaceholders() {
+        $field = DateCompositeField::create(
+            'placeholders',
+            'test date',
+            null
+        );
+        $children = $field->getChildren();
+        foreach($children as $childField) {
+            $this->assertNotNull($childField->getAttribute('placeholder'));
+        }
+    }
+
+    public function testNoPlaceholders() {
+        $field = DateCompositeField::create(
+            'hideplaceholders',
+            'test date',
+            null
+        )->hidePlaceholders();
+        $children = $field->getChildren();
+        foreach($children as $childField) {
+            $this->assertNull($childField->getAttribute('placeholder'));
+        }
+    }
 }
