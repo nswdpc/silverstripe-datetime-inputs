@@ -40,6 +40,7 @@ class DayOfMonthField extends NumberField
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function Type()
     {
         return 'dayofmonth text';
@@ -49,6 +50,7 @@ class DayOfMonthField extends NumberField
      * @inheritdoc
      * The parent field handles validation for invalid complete dates
      */
+    #[\Override]
     public function validate(): ValidationResult
     {
         $validationResult = parent::validate();

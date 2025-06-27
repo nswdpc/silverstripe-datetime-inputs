@@ -20,7 +20,7 @@ class DatetimeInputTestController extends Controller implements TestOnly
     /**
      * @config
      */
-    private static $allowed_actions = [
+    private static array $allowed_actions = [
         'DatetimeCompositeTestForm',
         'doTestDate'
     ];
@@ -28,25 +28,26 @@ class DatetimeInputTestController extends Controller implements TestOnly
     /**
      * @config
      */
-    private static $url_segment = "DatetimeInputTestController";
+    private static string $url_segment = "DatetimeInputTestController";
 
     protected $template = 'BlankPage';
 
     /**
      * @config
      */
-    private static $url_handlers = [
+    private static array $url_handlers = [
         '$Action//$ID/$OtherID' => "handleAction",
     ];
 
     public function __construct()
     {
         parent::__construct();
-        if (Controller::has_curr()) {
+        if (\SilverStripe\Control\Controller::curr() instanceof \SilverStripe\Control\Controller) {
             $this->setRequest(Controller::curr()->getRequest());
         }
     }
 
+    #[\Override]
     public function Link($action = null)
     {
         /** @skipUpgrade */
@@ -68,8 +69,7 @@ class DatetimeInputTestController extends Controller implements TestOnly
             'TestDate',
             'Test date'
         );
-
-        $form = Form::create(
+        return Form::create(
             $this,
             "DatetimeCompositeTestForm",
             Fieldlist::create(
@@ -81,18 +81,18 @@ class DatetimeInputTestController extends Controller implements TestOnly
                     'Submit'
                 )
             ),
-            RequiredFields::create(['TestDate'])
+            \SilverStripe\Forms\Validation\RequiredFieldsValidator::create(['TestDate'])
         );
-        return $form;
     }
 
-    public function doTestDate($data, $form, $request)
+    public function doTestDate($data, $form, $request): \SilverStripe\Control\HTTPResponse
     {
         $dataValue = $form->Fields()->dataFieldByName('TestDate')->dataValue();
         $form->sessionMessage('TEST_DATEINPUT_OK_' . $dataValue, 'good');
         return $this->redirectBack();
     }
 
+    #[\Override]
     public function getViewer($action = null)
     {
         return new SSViewer('BlankPage');

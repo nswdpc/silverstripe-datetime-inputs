@@ -17,21 +17,19 @@ class DatetimeCompositeField extends DateCompositeField
      */
     protected $timeField;
 
-    /**
-     * @return string
-     */
+    #[\Override]
     protected static function getParserPattern(): string
     {
         $pattern = parent::getParserPattern();
         $pattern .= " ";
-        $pattern .= "(?<time>\d{1,2}\:\d{1,2})";
-        return $pattern;
+        return $pattern . "(?<time>\d{1,2}\:\d{1,2})";
     }
 
     /**
      * Push time input into composite
      * @inheritdoc
      */
+    #[\Override]
     public function buildDateTimeFields(): FieldList
     {
 
@@ -58,9 +56,9 @@ class DatetimeCompositeField extends DateCompositeField
 
     /**
      * Return the value as a YMD formatted date
-     * @return string
      */
-    public function dataValue()
+    #[\Override]
+    public function dataValue(): string
     {
         $value = parent::dataValue();
         $timeValue = $this->timeField->dataValue();
@@ -71,6 +69,7 @@ class DatetimeCompositeField extends DateCompositeField
     /**
      * Return formatted representation of the current field value
      */
+    #[\Override]
     public function getFormattedValue(): ?string
     {
         $value = $this->Value();
@@ -78,17 +77,19 @@ class DatetimeCompositeField extends DateCompositeField
             $dbField = DBField::create_field(DBDatetime::class, $value);
             $value = $dbField->FormatFromSettings();
         }
+
         return $value;
     }
 
     /**
      * Date and time validation message
      */
+    #[\Override]
     public static function getDateValidationErrorMessage($dateValue): string
     {
         return _t(
             'DateCompositeField.INVALID_DATE_TIME_PROVIDED',
-            'The date and time \'{providedDate}\' is not valid. Please check the year, month, day and time values.',
+            "The date and time '{providedDate}' is not valid. Please check the year, month, day and time values.",
             [
                 'providedDate' => $dateValue
             ]
@@ -98,12 +99,14 @@ class DatetimeCompositeField extends DateCompositeField
     /**
      * Hide placeholders
      */
+    #[\Override]
     public function hidePlaceholders(): self
     {
         if ($this->hasFields()) {
             parent::hidePlaceholders();
             $this->timeField->setAttribute('placeholder', null);
         }
+
         return $this;
     }
 }

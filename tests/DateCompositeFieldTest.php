@@ -20,7 +20,7 @@ class DateCompositeFieldTest extends SapphireTest
 {
     protected $usesDatabase = false;
 
-    public function testDateParser()
+    public function testDateParser(): void
     {
 
         $inputValue = '2022-1-31';
@@ -44,7 +44,7 @@ class DateCompositeFieldTest extends SapphireTest
         $this->assertEquals('', $results['day']);
     }
 
-    public function testFieldCreate()
+    public function testFieldCreate(): void
     {
         $dateValue = "2030-12-14";
         $fieldName = "EventDate";
@@ -58,7 +58,7 @@ class DateCompositeFieldTest extends SapphireTest
         $this->assertEquals($dateValue, $dateValueReturned);
     }
 
-    public function testFieldChildren()
+    public function testFieldChildren(): void
     {
         $dateValue = "2030-12-14";
         $fieldName = "EventDate";
@@ -76,7 +76,7 @@ class DateCompositeFieldTest extends SapphireTest
 
     }
 
-    public function testFieldViaForm()
+    public function testFieldViaForm(): void
     {
 
         $dateValue = "2030-12-14";
@@ -105,7 +105,7 @@ class DateCompositeFieldTest extends SapphireTest
 
     }
 
-    public function testFieldWarning()
+    public function testFieldWarning(): void
     {
 
         // an invalid date
@@ -123,7 +123,7 @@ class DateCompositeFieldTest extends SapphireTest
 
     }
 
-    public function testDmyFieldOrdering()
+    public function testDmyFieldOrdering(): void
     {
         $dateValue = "2030-11-30";
         $fieldName = "Birthday";
@@ -147,7 +147,7 @@ class DateCompositeFieldTest extends SapphireTest
 
     }
 
-    public function testMdyFieldOrdering()
+    public function testMdyFieldOrdering(): void
     {
         $dateValue = "2030-11-30";
         $fieldName = "Birthday";
@@ -171,7 +171,7 @@ class DateCompositeFieldTest extends SapphireTest
 
     }
 
-    public function testYmdFieldOrdering()
+    public function testYmdFieldOrdering(): void
     {
         $dateValue = "2030-11-30";
         $fieldName = "Birthday";
@@ -195,7 +195,7 @@ class DateCompositeFieldTest extends SapphireTest
 
     }
 
-    public function testMinMaxYear()
+    public function testMinMaxYear(): void
     {
         $maxYear = date('Y');
         $year = $maxYear + 1;
@@ -218,7 +218,7 @@ class DateCompositeFieldTest extends SapphireTest
 
     }
 
-    public function testMinYear()
+    public function testMinYear(): void
     {
         $maxYear = date('Y');
         $year = $maxYear + 1;
@@ -240,7 +240,7 @@ class DateCompositeFieldTest extends SapphireTest
 
     }
 
-    public function testMaxYear()
+    public function testMaxYear(): void
     {
         $maxYear = date('Y');
         $year = $maxYear + 1;
@@ -262,7 +262,7 @@ class DateCompositeFieldTest extends SapphireTest
 
     }
 
-    public function testformatDateValueValid()
+    public function testformatDateValueValid(): void
     {
         $date = [
             'year' => 2010,
@@ -273,7 +273,7 @@ class DateCompositeFieldTest extends SapphireTest
         $this->assertEquals('20100424', $value);
     }
 
-    public function testformatDateValueAmbiguous()
+    public function testformatDateValueAmbiguous(): void
     {
         try {
             $date = [
@@ -283,12 +283,12 @@ class DateCompositeFieldTest extends SapphireTest
             ];
             $value = DateCompositeField::formatDateValue($date, "Ymd");
             $this->assertFalse(true, 'Result should be an InvalidArgumentException');
-        } catch (\Exception $e) {
-            $this->assertInstanceof(\InvalidArgumentException::class, $e);
+        } catch (\Exception $exception) {
+            $this->assertInstanceof(\InvalidArgumentException::class, $exception);
         }
     }
 
-    public function testformatDateValueInvalid()
+    public function testformatDateValueInvalid(): void
     {
         try {
             $date = [
@@ -297,12 +297,12 @@ class DateCompositeFieldTest extends SapphireTest
             ];
             $value = DateCompositeField::formatDateValue($date, "Ymd");
             $this->assertFalse(true, 'Result should be an InvalidArgumentException');
-        } catch (\Exception $e) {
-            $this->assertInstanceof(\InvalidArgumentException::class, $e);
+        } catch (\Exception $exception) {
+            $this->assertInstanceof(\InvalidArgumentException::class, $exception);
         }
     }
 
-    public function testHandleEmptyValue()
+    public function testHandleEmptyValue(): void
     {
         $field = DateCompositeField::create(
             'testdate',
@@ -314,7 +314,7 @@ class DateCompositeFieldTest extends SapphireTest
         $this->assertEquals("", $field->dataValue());
     }
 
-    public function testHandlePartialValue()
+    public function testHandlePartialValue(): void
     {
         $field = DateCompositeField::create(
             'testdate',
@@ -328,7 +328,7 @@ class DateCompositeFieldTest extends SapphireTest
         $this->assertEquals("", $field->dataValue());
     }
 
-    public function testPlaceholders()
+    public function testPlaceholders(): void
     {
         $field = DateCompositeField::create(
             'placeholders',
@@ -341,7 +341,7 @@ class DateCompositeFieldTest extends SapphireTest
         }
     }
 
-    public function testNoPlaceholders()
+    public function testNoPlaceholders(): void
     {
         $field = DateCompositeField::create(
             'hideplaceholders',

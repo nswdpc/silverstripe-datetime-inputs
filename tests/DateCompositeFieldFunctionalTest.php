@@ -22,14 +22,14 @@ class DateCompositeFieldFunctionalTest extends FunctionalTest
         DateInputTestController::class
     ];
 
-    protected function getTestPath()
+    protected function getTestPath(): string
     {
         return 'DateInputTestController';
     }
 
-    public function testDateSubmission()
+    public function testDateSubmission(): void
     {
-        $page = $this->get($this->getTestPath());
+        $this->get($this->getTestPath());
         $year = '2028';
         $month = '10';
         $day = '30';
@@ -43,12 +43,12 @@ class DateCompositeFieldFunctionalTest extends FunctionalTest
             ]
         );
         $this->assertEquals(200, $postSubmit->getStatusCode());
-        $this->assertTrue(strpos($postSubmit->getBody(), "TEST_DATEINPUT_OK_{$year}-{$month}-{$day}") !== false);
+        $this->assertTrue(str_contains($postSubmit->getBody(), "TEST_DATEINPUT_OK_{$year}-{$month}-{$day}"));
     }
 
-    public function testInvalidMinMaxYearSubmission()
+    public function testInvalidMinMaxYearSubmission(): void
     {
-        $page = $this->get($this->getTestPath());
+        $this->get($this->getTestPath());
         $year = '3001';// > 3000
         $month = '10';
         $day = '30';
@@ -71,12 +71,12 @@ class DateCompositeFieldFunctionalTest extends FunctionalTest
             ]
         );
 
-        $this->assertTrue(strpos($postSubmit->getBody(), $message) !== false);
+        $this->assertTrue(str_contains($postSubmit->getBody(), $message));
     }
 
-    public function testInvalidDateSubmission()
+    public function testInvalidDateSubmission(): void
     {
-        $page = $this->get($this->getTestPath());
+        $this->get($this->getTestPath());
         $year = '2028';
         $month = '11';
         $day = '31';
@@ -91,12 +91,12 @@ class DateCompositeFieldFunctionalTest extends FunctionalTest
         );
         $this->assertEquals(200, $postSubmit->getStatusCode());
         $message = DateCompositeField::getDateValidationErrorMessage("{$year}-{$month}-{$day}");
-        $this->assertTrue(strpos($postSubmit->getBody(), htmlspecialchars($message)) !== false);
+        $this->assertTrue(str_contains($postSubmit->getBody(), htmlspecialchars($message)));
     }
 
-    public function testInValidDayOfMonthSubmission()
+    public function testInValidDayOfMonthSubmission(): void
     {
-        $page = $this->get($this->getTestPath());
+        $this->get($this->getTestPath());
         $year = '2022';
         $month = '3';
         $day = '88';
@@ -114,12 +114,12 @@ class DateCompositeFieldFunctionalTest extends FunctionalTest
             'NSWDPC\\DateInputs\\DayOfMonthField.INVALID_DAY_OF_MONTH',
             "Please enter a valid day between 1 and 31"
         );
-        $this->assertTrue(strpos($postSubmit->getBody(), $message) !== false);
+        $this->assertTrue(str_contains($postSubmit->getBody(), $message));
     }
 
-    public function testInvalidMonthNumberSubmission()
+    public function testInvalidMonthNumberSubmission(): void
     {
-        $page = $this->get($this->getTestPath());
+        $this->get($this->getTestPath());
         $year = '2022';
         $month = '86';
         $day = '12';
@@ -137,17 +137,17 @@ class DateCompositeFieldFunctionalTest extends FunctionalTest
             'NSWDPC\\DateInputs\\MonthField.INVALID_MONTH',
             "Please enter a valid month between 1 and 12"
         );
-        $this->assertTrue(strpos($postSubmit->getBody(), $message) !== false);
+        $this->assertTrue(str_contains($postSubmit->getBody(), $message));
     }
 
-    public function testRequiredDateSubmission()
+    public function testRequiredDateSubmission(): void
     {
-        $page = $this->get($this->getTestPath());
+        $this->get($this->getTestPath());
         $postSubmit = $this->submitForm(
             'Form_DateCompositeTestForm',
             'action_doTestDate'
         );
         $message = '"Test date" is required';
-        $this->assertTrue(strpos($postSubmit->getBody(), htmlspecialchars($message)) !== false);
+        $this->assertTrue(str_contains($postSubmit->getBody(), htmlspecialchars($message)));
     }
 }

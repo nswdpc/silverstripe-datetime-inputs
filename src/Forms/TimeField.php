@@ -15,6 +15,7 @@ class TimeField extends BaseTimeField
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function Type()
     {
         return 'time text';
