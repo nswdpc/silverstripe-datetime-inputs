@@ -9,8 +9,8 @@ use SilverStripe\Core\Validation\ValidationResult;
  * Month input field, handles validation
  * @author James
  */
-class DayOfMonthField extends NumberField {
-
+class DayOfMonthField extends NumberField
+{
     use DateInputChild;
 
     /**

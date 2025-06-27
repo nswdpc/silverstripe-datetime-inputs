@@ -8,8 +8,8 @@ use SilverStripe\Dev\FunctionalTest;
 /**
  * FunctionalTest for date field
  */
-class DatetimeCompositeFieldFunctionalTest extends FunctionalTest {
-
+class DatetimeCompositeFieldFunctionalTest extends FunctionalTest
+{
     /**
      * @inheritdoc
      */
@@ -22,12 +22,14 @@ class DatetimeCompositeFieldFunctionalTest extends FunctionalTest {
         DatetimeInputTestController::class
     ];
 
-    protected function getTestPath() {
+    protected function getTestPath()
+    {
         return 'DatetimeInputTestController';
     }
 
-    public function testDateSubmission() {
-        $page = $this->get( $this->getTestPath() );
+    public function testDateSubmission()
+    {
+        $page = $this->get($this->getTestPath());
         $year = '2028';
         $month = '10';
         $day = '30';
@@ -46,8 +48,9 @@ class DatetimeCompositeFieldFunctionalTest extends FunctionalTest {
         $this->assertTrue(strpos($postSubmit->getBody(), "TEST_DATEINPUT_OK_{$year}-{$month}-{$day} {$time}") !== false);
     }
 
-    public function testInvalidTimeSubmission() {
-        $page = $this->get( $this->getTestPath() );
+    public function testInvalidTimeSubmission()
+    {
+        $page = $this->get($this->getTestPath());
         $year = '2028';
         $month = '11';
         $day = '30';
@@ -68,8 +71,9 @@ class DatetimeCompositeFieldFunctionalTest extends FunctionalTest {
         $this->assertTrue(strpos($postSubmit->getBody(), $message) !== false);
     }
 
-    public function testRequiredDateSubmission() {
-        $page = $this->get( $this->getTestPath() );
+    public function testRequiredDateSubmission()
+    {
+        $page = $this->get($this->getTestPath());
         $postSubmit = $this->submitForm(
             'Form_DatetimeCompositeTestForm',
             'action_doTestDate'

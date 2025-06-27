@@ -15,8 +15,8 @@ use SilverStripe\View\SSViewer;
  * Test controller for Datetime input testing
  * @author James
  */
-class DatetimeInputTestController extends Controller implements TestOnly {
-
+class DatetimeInputTestController extends Controller implements TestOnly
+{
     /**
      * @config
      */
@@ -56,11 +56,13 @@ class DatetimeInputTestController extends Controller implements TestOnly {
         );
     }
 
-    public function DatetimeCompositeTestForm() {
+    public function DatetimeCompositeTestForm()
+    {
         return $this->Form();
     }
 
-    public function Form() {
+    public function Form()
+    {
 
         $datetimeCompositeField = DatetimeCompositeField::create(
             'TestDate',
@@ -84,7 +86,8 @@ class DatetimeInputTestController extends Controller implements TestOnly {
         return $form;
     }
 
-    public function doTestDate($data, $form, $request) {
+    public function doTestDate($data, $form, $request)
+    {
         $dataValue = $form->Fields()->dataFieldByName('TestDate')->dataValue();
         $form->sessionMessage('TEST_DATEINPUT_OK_' . $dataValue, 'good');
         return $this->redirectBack();

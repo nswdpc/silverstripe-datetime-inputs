@@ -10,8 +10,8 @@ use SilverStripe\ORM\FieldType\DBDatetime;
  * A composite field for date and time input
  * @author James
  */
-class DatetimeCompositeField extends DateCompositeField {
-
+class DatetimeCompositeField extends DateCompositeField
+{
     /**
      * @var \NSWDPC\DateInputs\TimeField
      */
@@ -20,7 +20,8 @@ class DatetimeCompositeField extends DateCompositeField {
     /**
      * @return string
      */
-    protected static function getParserPattern() : string {
+    protected static function getParserPattern(): string
+    {
         $pattern = parent::getParserPattern();
         $pattern .= " ";
         $pattern .= "(?<time>\d{1,2}\:\d{1,2})";
@@ -31,11 +32,12 @@ class DatetimeCompositeField extends DateCompositeField {
      * Push time input into composite
      * @inheritdoc
      */
-    public function buildDateTimeFields() : FieldList {
+    public function buildDateTimeFields(): FieldList
+    {
 
         $this->children = parent::buildDateTimeFields();
 
-        if(!$this->timeField) {
+        if (!$this->timeField) {
             $this->timeField = TimeField::create(
                 $this->getPrefixedFieldName('time'),
                 _t('DatetimeCompositeField.TIME_TITLE', 'Time'),
@@ -49,7 +51,7 @@ class DatetimeCompositeField extends DateCompositeField {
         }
 
         // ensure time field is added to the child fields
-        $this->children->push( $this->timeField );
+        $this->children->push($this->timeField);
         $this->children->setContainerField($this);
         return $this->children;
     }
@@ -58,7 +60,8 @@ class DatetimeCompositeField extends DateCompositeField {
      * Return the value as a YMD formatted date
      * @return string
      */
-    public function dataValue() {
+    public function dataValue()
+    {
         $value = parent::dataValue();
         $timeValue = $this->timeField->dataValue();
         $value = $value . " " . $timeValue;
@@ -68,9 +71,10 @@ class DatetimeCompositeField extends DateCompositeField {
     /**
      * Return formatted representation of the current field value
      */
-    public function getFormattedValue() : ?string {
+    public function getFormattedValue(): ?string
+    {
         $value = $this->Value();
-        if($value) {
+        if ($value) {
             $dbField = DBField::create_field(DBDatetime::class, $value);
             $value = $dbField->FormatFromSettings();
         }
@@ -80,7 +84,8 @@ class DatetimeCompositeField extends DateCompositeField {
     /**
      * Date and time validation message
      */
-    public static function getDateValidationErrorMessage($dateValue) : string {
+    public static function getDateValidationErrorMessage($dateValue): string
+    {
         return _t(
             'DateCompositeField.INVALID_DATE_TIME_PROVIDED',
             'The date and time \'{providedDate}\' is not valid. Please check the year, month, day and time values.',
@@ -93,8 +98,9 @@ class DatetimeCompositeField extends DateCompositeField {
     /**
      * Hide placeholders
      */
-    public function hidePlaceholders() : self {
-        if($this->hasFields()) {
+    public function hidePlaceholders(): self
+    {
+        if ($this->hasFields()) {
             parent::hidePlaceholders();
             $this->timeField->setAttribute('placeholder', null);
         }

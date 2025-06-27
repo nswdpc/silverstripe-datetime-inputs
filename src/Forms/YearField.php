@@ -9,8 +9,8 @@ use SilverStripe\Core\Validation\ValidationResult;
  * Year field handles validation
  * @author James
  */
-class YearField extends NumberField {
-
+class YearField extends NumberField
+{
     use DateInputChild;
 
     /**
@@ -53,7 +53,7 @@ class YearField extends NumberField {
         // Check for valid month
         $minYear = $this->getAttribute('min');
         $maxYear = $this->getAttribute('max');
-        if($minYear && $maxYear && ($this->value < $minYear || $this->value > $maxYear)) {
+        if ($minYear && $maxYear && ($this->value < $minYear || $this->value > $maxYear)) {
             $validationResult->addFieldError(
                 $this->name,
                 _t(
@@ -66,7 +66,7 @@ class YearField extends NumberField {
                 ),
                 ValidationResult::TYPE_ERROR
             );
-        } else if($minYear && $this->value < $minYear) {
+        } elseif ($minYear && $this->value < $minYear) {
             $validationResult->addFieldError(
                 $this->name,
                 _t(
@@ -78,7 +78,7 @@ class YearField extends NumberField {
                 ),
                 ValidationResult::TYPE_ERROR
             );
-        } else if($maxYear && $this->value > $maxYear) {
+        } elseif ($maxYear && $this->value > $maxYear) {
             $validationResult->addFieldError(
                 $this->name,
                 _t(

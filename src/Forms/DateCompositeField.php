@@ -20,22 +20,22 @@ use SilverStripe\View\Requirements;
  * Default field ordering is year-month-day
  * @author James
  */
-class DateCompositeField extends CompositeField {
+class DateCompositeField extends CompositeField
+{
+    /**
+     * @var string
+     */
+    public const ORDER_DMY = 'dmy';
 
     /**
      * @var string
      */
-    const ORDER_DMY = 'dmy';
+    public const ORDER_YMD = 'ymd';
 
     /**
      * @var string
      */
-    const ORDER_YMD = 'ymd';
-
-    /**
-     * @var string
-     */
-    const ORDER_MDY = 'mdy';
+    public const ORDER_MDY = 'mdy';
 
     /**
      * @var string
@@ -114,9 +114,9 @@ class DateCompositeField extends CompositeField {
 
         // Ensure title and name are stored correctly
         if (is_null($title)) {
-            $this->setTitle( FormField::name_to_label($name) );
+            $this->setTitle(FormField::name_to_label($name));
         } else {
-            $this->setTitle( $title );
+            $this->setTitle($title);
         }
 
         $this->setName($name);
@@ -127,7 +127,8 @@ class DateCompositeField extends CompositeField {
      * Helper method to get the key's value as a string from the given array
      * is the key is not set the value returned is an empty string
      */
-    public static function getStringValueFromArray(array $dateValue, string $key) : string {
+    public static function getStringValueFromArray(array $dateValue, string $key): string
+    {
         return isset($dateValue[$key]) ? trim(strval($dateValue[$key])) : '';
     }
 
@@ -137,18 +138,19 @@ class DateCompositeField extends CompositeField {
      * The $dateValue must have a year, month and day value, with those keys. Optional time value supported.
      * @throws \InvalidArgumentException
      */
-    public static function formatDateValue(array $dateValue, string $format = "Y-m-d") : string {
+    public static function formatDateValue(array $dateValue, string $format = "Y-m-d"): string
+    {
         $date = [];
         $date[] = static::getStringValueFromArray($dateValue, 'year');
         $date[] = static::getStringValueFromArray($dateValue, 'month');
         $date[] = static::getStringValueFromArray($dateValue, 'day');
         $date = array_filter($date);// remove empties
-        if(count($date) != 3) {
+        if (count($date) != 3) {
             throw new \InvalidArgumentException("Invalid dateValue passed to formatDateValue - requires a year, month and day value as strings");
         }
         $dateStr = implode("-", $date);
         $timeStr = static::getStringValueFromArray($dateValue, 'time');
-        if($timeStr) {
+        if ($timeStr) {
             $dateStr .= " " . $timeStr;
         }
 
@@ -156,7 +158,7 @@ class DateCompositeField extends CompositeField {
             $dt = new \DateTime($dateStr);
             $dtFormatted = $dt->format($format);
             return $dtFormatted;
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             // invalid format or date string
         }
 
@@ -166,7 +168,8 @@ class DateCompositeField extends CompositeField {
     /**
      * @return string
      */
-    protected static function getParserPattern() : string {
+    protected static function getParserPattern(): string
+    {
         $pattern = "(?<year>\d*)\-(?<month>\d{1,2})\-(?<day>\d{1,2})";
         return $pattern;
     }
@@ -175,11 +178,12 @@ class DateCompositeField extends CompositeField {
      * Parse a date time value into parts via named capture groups
      * @param string $inputValue input value that may or may not be a valid date
      */
-    public static function parseDateTime(string $inputValue) : array {
+    public static function parseDateTime(string $inputValue): array
+    {
         $pattern = "/" . static::getParserPattern() . "/";
         $result = preg_match($pattern, $inputValue, $matches);
         $data = [];
-        foreach(['year','month','day','time'] as $key) {
+        foreach (['year','month','day','time'] as $key) {
             $data[$key] = (isset($matches[$key]) ? $matches[$key] : '');
         }
         return $data;
@@ -210,26 +214,26 @@ class DateCompositeField extends CompositeField {
             'strValue' => ''
         ];
 
-        if(is_array($value)) {
+        if (is_array($value)) {
             // check if value contains data
             $value = array_filter(
                 $value,
-                function($v, $k) {
+                function ($v, $k) {
                     $v = is_string($v) ? trim($v) : '';
                     return $v !== '';
                 },
                 ARRAY_FILTER_USE_BOTH
             );
-            if(count($value) > 0) {
+            if (count($value) > 0) {
                 // submitted value
                 $this->isSubmittingValue = true;
                 $this->dateValue = array_merge($this->dateValue, $value);
                 $this->dateValue['strValue'] = $this->dateValue['year'] . "-" . $this->dateValue['month'] . "-" . $this->dateValue['day'];
-                if(!empty($this->dateValue['time'])) {
+                if (!empty($this->dateValue['time'])) {
                     $this->dateValue['strValue'] .= " " . $this->dateValue['time'];
                 }
             }
-        } else if(is_string($value)) {
+        } elseif (is_string($value)) {
             $this->dateValue['strValue'] = $value;
 
             try {
@@ -268,12 +272,13 @@ class DateCompositeField extends CompositeField {
      * @return self
      * @throws \InvalidArgumentException
      */
-    public function setFieldOrder(string $order, string $formatExampleValue) : self {
-        switch($order) {
+    public function setFieldOrder(string $order, string $formatExampleValue): self
+    {
+        switch ($order) {
             case self::ORDER_DMY:
             case self::ORDER_YMD:
             case self::ORDER_MDY:
-                if($this->children && ($order == $this->fieldOrder)) {
+                if ($this->children && ($order == $this->fieldOrder)) {
                     // nothing to change if the fields exist
                     return $this;
                 }
@@ -299,14 +304,16 @@ class DateCompositeField extends CompositeField {
     /**
      * Get the current field order
      */
-    public function getFieldOrder() : string {
+    public function getFieldOrder(): string
+    {
         return $this->fieldOrder;
     }
 
     /**
      * Set the field format example helper text
      */
-    public function setFormatExample(string $example) : self {
+    public function setFormatExample(string $example): self
+    {
         $this->formatExample = $example;
         return $this;
     }
@@ -314,14 +321,16 @@ class DateCompositeField extends CompositeField {
     /**
      * Get the field format example helper text
      */
-    public function getFormatExample() : string {
+    public function getFormatExample(): string
+    {
         return $this->formatExample;
     }
 
     /**
      * Set a field warning message, eg for invalid date to allow for correction
      */
-    public function setFieldWarning(string $warningMessage) : self {
+    public function setFieldWarning(string $warningMessage): self
+    {
         $this->fieldWarningMessage = $warningMessage;
         return $this;
     }
@@ -329,7 +338,8 @@ class DateCompositeField extends CompositeField {
     /**
      * Set a field warning message
      */
-    public function getFieldWarning() : ?string {
+    public function getFieldWarning(): ?string
+    {
         return $this->fieldWarningMessage;
     }
 
@@ -338,8 +348,9 @@ class DateCompositeField extends CompositeField {
      * @param int|null $minYear
      * @param int|null $maxYear
      */
-    public function setMinMaxYear(int $minYear = null, int $maxYear = null) : self {
-        if($this->yearField) {
+    public function setMinMaxYear(int $minYear = null, int $maxYear = null): self
+    {
+        if ($this->yearField) {
             $this->yearField->setAttribute('min', $minYear)->setAttribute('max', $maxYear);
         }
         return $this;
@@ -348,11 +359,12 @@ class DateCompositeField extends CompositeField {
     /**
      * Get minimum allowed year value
      */
-    public function getMinYear() : ?int {
+    public function getMinYear(): ?int
+    {
         $val = null;
-        if($this->yearField) {
+        if ($this->yearField) {
             $val = $this->yearField->getAttribute('min');
-            if(!is_null($val)) {
+            if (!is_null($val)) {
                 $val = intval($val);
             }
         }
@@ -362,11 +374,12 @@ class DateCompositeField extends CompositeField {
     /**
      * Get maximum allowed year value
      */
-    public function getMaxYear() : ?int {
+    public function getMaxYear(): ?int
+    {
         $val = null;
-        if($this->yearField) {
+        if ($this->yearField) {
             $val = $this->yearField->getAttribute('max');
-            if(!is_null($val)) {
+            if (!is_null($val)) {
                 $val = intval($val);
             }
         }
@@ -379,7 +392,7 @@ class DateCompositeField extends CompositeField {
      */
     public function setDisabled($disabled)
     {
-        foreach($this->children as $child) {
+        foreach ($this->children as $child) {
             $child->setDisabled($disabled);
         }
         return parent::setDisabled($disabled);
@@ -391,7 +404,7 @@ class DateCompositeField extends CompositeField {
      */
     public function setReadonly($readonly)
     {
-        foreach($this->children as $child) {
+        foreach ($this->children as $child) {
             $child->setReadonly($readonly);
         }
         return parent::setReadonly($readonly);
@@ -400,7 +413,8 @@ class DateCompositeField extends CompositeField {
     /**
      * Return whether child fields exist
      */
-    public function hasFields() : bool {
+    public function hasFields(): bool
+    {
         return $this->dayField && $this->monthField && $this->yearField;
     }
 
@@ -419,11 +433,12 @@ class DateCompositeField extends CompositeField {
      * The value may or may not be a valid date
      * @return string
      */
-    public function dataValue() {
+    public function dataValue()
+    {
         $year = $this->yearField->dataValue();
         $month = $this->monthField->dataValue();
         $day = $this->dayField->dataValue();
-        if($year && $month && $day) {
+        if ($year && $month && $day) {
             $this->value = "{$year}-{$month}-{$day}";
             return $this->value;
         } else {
@@ -434,7 +449,8 @@ class DateCompositeField extends CompositeField {
     /**
      * Return a prefixed field name
      */
-    public function getPrefixedFieldName(string $suffix) : string {
+    public function getPrefixedFieldName(string $suffix): string
+    {
         $fieldName = $this->getName() . "[{$suffix}]";
         return $fieldName;
     }
@@ -444,9 +460,10 @@ class DateCompositeField extends CompositeField {
      * @throws \RuntimeException
      * @inheritdoc
      */
-    protected function buildDateTimeFields() : Fieldlist {
+    protected function buildDateTimeFields(): Fieldlist
+    {
 
-        if(!$this->hasFields()) {
+        if (!$this->hasFields()) {
             // create fields
             $this->dayField = DayOfMonthField::create(
                 $this->getPrefixedFieldName('day'),
@@ -483,29 +500,35 @@ class DateCompositeField extends CompositeField {
         // Logger::log("Set month {$this->dateValue['month']}");
         // Logger::log("Set day {$this->dateValue['day']}");
 
-        switch($this->fieldOrder) {
+        switch ($this->fieldOrder) {
             // non US locale
             case self::ORDER_DMY:
                 $this->children = Fieldlist::create(
-                    $this->dayField, $this->monthField, $this->yearField
+                    $this->dayField,
+                    $this->monthField,
+                    $this->yearField
                 );
                 break;
-            // US locale
+                // US locale
             case self::ORDER_MDY:
                 $this->children = Fieldlist::create(
-                    $this->monthField, $this->dayField, $this->yearField
+                    $this->monthField,
+                    $this->dayField,
+                    $this->yearField
                 );
                 break;
-            // iso - default
+                // iso - default
             case self::ORDER_YMD:
             default:
                 $this->children = Fieldlist::create(
-                    $this->yearField, $this->monthField, $this->dayField
+                    $this->yearField,
+                    $this->monthField,
+                    $this->dayField
                 );
                 break;
         }
 
-        if($this->formatExampleValue) {
+        if ($this->formatExampleValue) {
             $this->setFormatExample(
                 _t(
                     'DateCompositeField.FORMAT_EXAMPLE_HELPER',
@@ -527,7 +550,7 @@ class DateCompositeField extends CompositeField {
     public function getFieldHolderTemplate()
     {
         $controller = Controller::curr();
-        if($controller instanceof LeftAndMain) {
+        if ($controller instanceof LeftAndMain) {
             return "NSWDPC/DateInputs/Admin/DateCompositeField_holder";
         } else {
             return "NSWDPC/DateInputs/DateCompositeField_holder";
@@ -544,7 +567,7 @@ class DateCompositeField extends CompositeField {
             'screen'
         );
         $controller = Controller::curr();
-        if($controller instanceof LeftAndMain) {
+        if ($controller instanceof LeftAndMain) {
             Requirements::css(
                 'nswdpc/silverstripe-datetime-inputs:client/static/css/admin.css',
                 'screen'
@@ -558,18 +581,19 @@ class DateCompositeField extends CompositeField {
      * @return bool
      * @throws DateValidationException
      */
-    protected function checkProvidedDateTime(string $value) : bool {
-        if($value === '') {
+    protected function checkProvidedDateTime(string $value): bool
+    {
+        if ($value === '') {
             // empty value provided
             return true;
         }
         $check = new \DateTime($value);
         $lastErrors = $check->getLastErrors();
-        if(!empty($lastErrors)) {
-            foreach(['warning_count','error_count'] as $key) {
-                if(isset($lastErrors[$key]) && $lastErrors[$key] > 0) {
+        if (!empty($lastErrors)) {
+            foreach (['warning_count','error_count'] as $key) {
+                if (isset($lastErrors[$key]) && $lastErrors[$key] > 0) {
                     throw new DateValidationException(
-                        self::getDateValidationErrorMessage( $value )
+                        self::getDateValidationErrorMessage($value)
                     );
                 }
             }
@@ -580,7 +604,7 @@ class DateCompositeField extends CompositeField {
     public function validate(): ValidationResult
     {
         $validationResult = parent::validate();
-        if(!$validationResult->isValid()) {
+        if (!$validationResult->isValid()) {
             // parent validation failed
             return $validationResult;
         }
@@ -597,12 +621,12 @@ class DateCompositeField extends CompositeField {
         } catch (\Exception $e) {
             $validationResult->addFieldError(
                 $this->name,
-                self::getDateValidationErrorMessage( $this->dateValue['strValue'] ),
+                self::getDateValidationErrorMessage($this->dateValue['strValue']),
                 ValidationResult::TYPE_ERROR
             );
         }
 
-        if(!$validationResult->isValid()) {
+        if (!$validationResult->isValid()) {
             $validationResult->addError(
                 _t(
                     'DateCompositeField.FIELD_HAS_ERRORS',
@@ -621,7 +645,8 @@ class DateCompositeField extends CompositeField {
     /**
      * Date validation message
      */
-    public static function getDateValidationErrorMessage($dateValue) : string {
+    public static function getDateValidationErrorMessage($dateValue): string
+    {
         return _t(
             'DateCompositeField.INVALID_DATE_PROVIDED',
             'The date \'{providedDate}\' is not a valid date. Please check the year, month and day values.',
@@ -634,9 +659,10 @@ class DateCompositeField extends CompositeField {
     /**
      * Return formatted representation of the current field value
      */
-    public function getFormattedValue() : ?string {
+    public function getFormattedValue(): ?string
+    {
         $value = $this->Value();
-        if($value) {
+        if ($value) {
             $dbField = DBField::create_field(DBDate::class, $value);
             $value = $dbField->FormatFromSettings();
         }
@@ -654,15 +680,16 @@ class DateCompositeField extends CompositeField {
             $this->title,
             $value
         );
-        $field->setDescription( $this->getDescription() );
-        $field->setRightTitle( $this->RightTitle() );
+        $field->setDescription($this->getDescription());
+        $field->setRightTitle($this->RightTitle());
         return $field;
     }
 
     /**
      * Compat method to support fields using set/get html5
      */
-    public function setHTML5($is) {
+    public function setHTML5($is)
+    {
         // NOOP
         return $this;
     }
@@ -670,23 +697,25 @@ class DateCompositeField extends CompositeField {
     /**
      * Compat method to support fields using set/get html5
      */
-    public function getHTML5() {
+    public function getHTML5()
+    {
         return true;
     }
 
     /**
      * Set whether the field represents a date of birth
      */
-    public function setIsDateOfBirth($is) {
-        if($this->hasFields()) {
-            if($is) {
-                $this->yearField->setAttribute('autocomplete','bday-year');
-                $this->monthField->setAttribute('autocomplete','bday-month');
-                $this->dayField->setAttribute('autocomplete','bday-day');
+    public function setIsDateOfBirth($is)
+    {
+        if ($this->hasFields()) {
+            if ($is) {
+                $this->yearField->setAttribute('autocomplete', 'bday-year');
+                $this->monthField->setAttribute('autocomplete', 'bday-month');
+                $this->dayField->setAttribute('autocomplete', 'bday-day');
             } else {
-                $this->yearField->setAttribute('autocomplete','');
-                $this->monthField->setAttribute('autocomplete','');
-                $this->dayField->setAttribute('autocomplete','');
+                $this->yearField->setAttribute('autocomplete', '');
+                $this->monthField->setAttribute('autocomplete', '');
+                $this->dayField->setAttribute('autocomplete', '');
             }
         }
         return $this;
@@ -695,8 +724,9 @@ class DateCompositeField extends CompositeField {
     /**
      * Hide placeholders
      */
-    public function hidePlaceholders() : self {
-        if($this->hasFields()) {
+    public function hidePlaceholders(): self
+    {
+        if ($this->hasFields()) {
             $this->yearField->setAttribute('placeholder', null);
             $this->monthField->setAttribute('placeholder', null);
             $this->dayField->setAttribute('placeholder', null);
