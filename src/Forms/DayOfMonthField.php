@@ -3,6 +3,7 @@
 namespace NSWDPC\DateInputs;
 
 use Codem\Utilities\HTML5\NumberField;
+use SilverStripe\Core\Validation\ValidationResult;
 
 /**
  * Month input field, handles validation
@@ -48,30 +49,27 @@ class DayOfMonthField extends NumberField {
      * @inheritdoc
      * The parent field handles validation for invalid complete dates
      */
-    public function validate($validator)
+    public function validate(): ValidationResult
     {
+        $validationResult = parent::validate();
         // Don't validate empty fields
-        if (empty($this->value)) {
-            return true;
-        }
-
-        $result = parent::validate($validator);
-        if(!$result) {
-            return false;
+        if (empty($this->value) || !$validationResult->isValid()) {
+            return $validationResult;
         }
 
         // Check for valid month
         if ($this->value < 1 || $this->value > 31) {
-            $validator->validationError(
+            $validationResult->addFieldError(
                 $this->name,
                 _t(
                     'NSWDPC\\DateInputs\\DayOfMonthField.INVALID_DAY_OF_MONTH',
                     "Please enter a valid day between 1 and 31"
-                )
+                ),
+                ValidationResult::TYPE_ERROR
             );
-            return false;
         }
-        return true;
+
+        return $validationResult;
     }
 
 }

@@ -3,6 +3,7 @@
 namespace NSWDPC\DateInputs;
 
 use Codem\Utilities\HTML5\NumberField;
+use SilverStripe\Core\Validation\ValidationResult;
 
 /**
  * Year field handles validation
@@ -41,67 +42,56 @@ class YearField extends NumberField {
      * @inheritdoc
      * The parent field handles validation for invalid complete dates
      */
-    public function validate($validator)
+    public function validate(): ValidationResult
     {
+        $validationResult = parent::validate();
         // Don't validate empty fields
-        if (empty($this->value)) {
-            return true;
-        }
-
-        $result = parent::validate($validator);
-        if(!$result) {
-            return false;
+        if (empty($this->value) || !$validationResult->isValid()) {
+            return $validationResult;
         }
 
         // Check for valid month
-        $valid = true;
         $minYear = $this->getAttribute('min');
         $maxYear = $this->getAttribute('max');
-        if($minYear && $maxYear) {
-            if ($this->value < $minYear || $this->value > $maxYear) {
-                $validator->validationError(
-                    $this->name,
-                    _t(
-                        'NSWDPC\\DateInputs\\YearField.YEAR_OUT_OF_RANGE',
-                        "Please enter a year between {minYear} and {maxYear}",
-                        [
-                            'minYear' => $minYear,
-                            'maxYear' => $maxYear
-                        ]
-                    )
-                );
-                $valid = false;
-            }
-        } else if($minYear) {
-            if ($this->value < $minYear) {
-                $validator->validationError(
-                    $this->name,
-                    _t(
-                        'NSWDPC\\DateInputs\\YearField.YEAR_OUT_OF_RANGE',
-                        "Please enter a year equal to or after {minYear}",
-                        [
-                            'minYear' => $minYear
-                        ]
-                    )
-                );
-                $valid = false;
-            }
-        } else if($maxYear) {
-            if ($this->value > $maxYear) {
-                $validator->validationError(
-                    $this->name,
-                    _t(
-                        'NSWDPC\\DateInputs\\YearField.YEAR_OUT_OF_RANGE',
-                        "Please enter a year equal to or before {maxYear}",
-                        [
-                            'maxYear' => $maxYear
-                        ]
-                    )
-                );
-                $valid = false;
-            }
+        if($minYear && $maxYear && ($this->value < $minYear || $this->value > $maxYear)) {
+            $validationResult->addFieldError(
+                $this->name,
+                _t(
+                    'NSWDPC\\DateInputs\\YearField.YEAR_OUT_OF_RANGE',
+                    "Please enter a year between {minYear} and {maxYear}",
+                    [
+                        'minYear' => $minYear,
+                        'maxYear' => $maxYear
+                    ]
+                ),
+                ValidationResult::TYPE_ERROR
+            );
+        } else if($minYear && $this->value < $minYear) {
+            $validationResult->addFieldError(
+                $this->name,
+                _t(
+                    'NSWDPC\\DateInputs\\YearField.YEAR_OUT_OF_RANGE',
+                    "Please enter a year equal to or after {minYear}",
+                    [
+                        'minYear' => $minYear
+                    ]
+                ),
+                ValidationResult::TYPE_ERROR
+            );
+        } else if($maxYear && $this->value > $maxYear) {
+            $validationResult->addFieldError(
+                $this->name,
+                _t(
+                    'NSWDPC\\DateInputs\\YearField.YEAR_OUT_OF_RANGE',
+                    "Please enter a year equal to or before {maxYear}",
+                    [
+                        'maxYear' => $maxYear
+                    ]
+                ),
+                ValidationResult::TYPE_ERROR
+            );
         }
-        return $valid;
+        return $validationResult;
     }
 
 }

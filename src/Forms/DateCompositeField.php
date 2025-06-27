@@ -12,7 +12,7 @@ use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\ORM\FieldType\DBDate;
 use SilverStripe\ORM\DataObjectInterface;
 use SilverStripe\ORM\ValidationException;
-use SilverStripe\ORM\ValidationResult;
+use SilverStripe\Core\Validation\ValidationResult;
 use SilverStripe\View\Requirements;
 
 /**
@@ -577,49 +577,45 @@ class DateCompositeField extends CompositeField {
         return true;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function validate($validator)
+    public function validate(): ValidationResult
     {
-        $valid = parent::validate($validator);
-        if(!$valid) {
+        $validationResult = parent::validate();
+        if(!$validationResult->isValid()) {
             // parent validation failed
-            return false;
+            return $validationResult;
         }
 
         try {
-            $valid = true;
             // perform full date validation on the value
             $this->checkProvidedDateTime($this->dateValue['strValue']);
         } catch (DateValidationException $e) {
-            $valid = false;
-            $validator->validationError(
+            $validationResult->addFieldError(
                 $this->name,
-                $e->getMessage()
+                $e->getMessage(),
+                ValidationResult::TYPE_ERROR
             );
         } catch (\Exception $e) {
-            $valid = false;
-            $validator->validationError(
+            $validationResult->addFieldError(
                 $this->name,
-                self::getDateValidationErrorMessage( $this->dateValue['strValue'] )
+                self::getDateValidationErrorMessage( $this->dateValue['strValue'] ),
+                ValidationResult::TYPE_ERROR
             );
         }
 
-        if(!$valid) {
-            $validator->validationError(
-                '',// no field
+        if(!$validationResult->isValid()) {
+            $validationResult->addError(
                 _t(
                     'DateCompositeField.FIELD_HAS_ERRORS',
                     'The field \'{fieldTitle}\' contains errors',
                     [
                         'fieldTitle' => $this->Title()
                     ]
-                )
+                ),
+                ValidationResult::TYPE_ERROR
             );
         }
 
-        return $valid;
+        return $validationResult;
     }
 
     /**
