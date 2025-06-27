@@ -97,6 +97,7 @@ class DateCompositeFieldTest extends SapphireTest
         $form->loadDataFrom(['EventDate' => $dateValue ]);
 
         $fields = $form->Fields();
+        /** @var \NSWDPC\DateInputs\DateCompositeField $formDateField */
         $formDateField = $fields->dataFieldByName($fieldName);
 
         $children = $formDateField->getChildren();
@@ -210,7 +211,7 @@ class DateCompositeFieldTest extends SapphireTest
         );
 
         $min = 1990;
-        $max = date('Y');
+        $max = (int)date('Y');
         $field->setMinMaxYear($min, $max);
 
         $this->assertEquals($min, $field->getMinYear());
@@ -255,7 +256,7 @@ class DateCompositeFieldTest extends SapphireTest
         );
 
         $min = null;
-        $max = $maxYear;
+        $max = (int)$maxYear;
         $field->setMinMaxYear($min, $max);
         $this->assertEquals(null, $field->getMinYear());
         $this->assertEquals($maxYear, $field->getMaxYear());
@@ -282,7 +283,7 @@ class DateCompositeFieldTest extends SapphireTest
                 'day' => 24,
             ];
             $value = DateCompositeField::formatDateValue($date, "Ymd");
-            $this->assertFalse(true, 'Result should be an InvalidArgumentException');
+            $this->assertEmpty($value, 'Result should be an InvalidArgumentException');
         } catch (\Exception $exception) {
             $this->assertInstanceof(\InvalidArgumentException::class, $exception);
         }
@@ -296,7 +297,7 @@ class DateCompositeFieldTest extends SapphireTest
                 'day' => 24,
             ];
             $value = DateCompositeField::formatDateValue($date, "Ymd");
-            $this->assertFalse(true, 'Result should be an InvalidArgumentException');
+            $this->assertEmpty($value, 'Result should be an InvalidArgumentException');
         } catch (\Exception $exception) {
             $this->assertInstanceof(\InvalidArgumentException::class, $exception);
         }

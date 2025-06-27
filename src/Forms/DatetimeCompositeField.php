@@ -72,8 +72,9 @@ class DatetimeCompositeField extends DateCompositeField
     #[\Override]
     public function getFormattedValue(): ?string
     {
-        $value = $this->Value();
+        $value = $this->getValue();
         if ($value) {
+            /** @var \SilverStripe\ORM\FieldType\DBDatetime $dbField */
             $dbField = DBField::create_field(DBDatetime::class, $value);
             $value = $dbField->FormatFromSettings();
         }

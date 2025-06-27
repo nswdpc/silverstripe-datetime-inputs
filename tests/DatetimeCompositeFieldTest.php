@@ -103,6 +103,7 @@ class DatetimeCompositeFieldTest extends SapphireTest
         $fields = $form->Fields();
         $formDateField = $fields->dataFieldByName($fieldName);
 
+        /** @var \NSWDPC\DateInputs\DatetimeCompositeField $formDateField */
         $children = $formDateField->getChildren();
 
         $this->assertEquals(4, $children->count());

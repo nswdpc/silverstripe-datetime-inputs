@@ -537,7 +537,7 @@ class DateCompositeField extends CompositeField
     public function getFieldHolderTemplate()
     {
         $controller = Controller::curr();
-        if ($controller instanceof LeftAndMain) {
+        if (class_exists(LeftAndMain::class) && $controller instanceof LeftAndMain) {
             return "NSWDPC/DateInputs/Admin/DateCompositeField_holder";
         } else {
             return "NSWDPC/DateInputs/DateCompositeField_holder";
@@ -555,7 +555,7 @@ class DateCompositeField extends CompositeField
             'screen'
         );
         $controller = Controller::curr();
-        if ($controller instanceof LeftAndMain) {
+        if (class_exists(LeftAndMain::class) && $controller instanceof LeftAndMain) {
             Requirements::css(
                 'nswdpc/silverstripe-datetime-inputs:client/static/css/admin.css',
                 'screen'
@@ -609,7 +609,9 @@ class DateCompositeField extends CompositeField
                 $e->getMessage(),
                 ValidationResult::TYPE_ERROR
             );
+            /** @phpstan-ignore catch.neverThrown */
         } catch (\Exception) {
+            // A general exception can be thrown on invalid date values
             $validationResult->addFieldError(
                 $this->name,
                 self::getDateValidationErrorMessage($this->dateValue['strValue']),
@@ -617,6 +619,7 @@ class DateCompositeField extends CompositeField
             );
         }
 
+        /** @phpstan-ignore booleanNot.alwaysFalse */
         if (!$validationResult->isValid()) {
             $validationResult->addError(
                 _t(
@@ -653,8 +656,9 @@ class DateCompositeField extends CompositeField
     #[\Override]
     public function getFormattedValue(): ?string
     {
-        $value = $this->Value();
+        $value = $this->getValue();
         if ($value) {
+            /** @var \SilverStripe\ORM\FieldType\DBDate $dbField */
             $dbField = DBField::create_field(DBDate::class, $value);
             $value = $dbField->FormatFromSettings();
         }
@@ -662,9 +666,6 @@ class DateCompositeField extends CompositeField
         return $value;
     }
 
-    /**
-     * The readonly version of this field
-     */
     #[\Override]
     public function performReadonlyTransformation()
     {
@@ -676,6 +677,7 @@ class DateCompositeField extends CompositeField
         );
         $field->setDescription($this->getDescription());
         $field->setRightTitle($this->RightTitle());
+        /** @phpstan-ignore return.type */
         return $field;
     }
 
