@@ -7,23 +7,28 @@
         "nsw",
         "datetime",
         "date",
-        "date field", "datetime field"
+        "date field",
+        "datetime field"
     ],
     "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "James Ellis",
-            "homepage": "https://dpc.nsw.gov.au",
             "role": "Developer"
         }
     ],
     "require": {
-        "silverstripe/framework" : "^5",
-        "codem/silverstripe-html5-inputs": "^1"
+        "silverstripe/framework" : "^6",
+        "codem/silverstripe-html5-inputs": "^2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5",
-        "friendsofphp/php-cs-fixer": "^3"
+        "cambis/silverstripe-rector": "^2",
+        "cambis/silverstan": "^2",
+        "friendsofphp/php-cs-fixer": "^3",
+        "nswdpc/ci-files": "dev-v-4",
+        "phpunit/phpunit": "^11",
+        "phpstan/phpstan": "^2",
+        "rector/rector": "^2"
     },
     "extra": {
         "expose": [
