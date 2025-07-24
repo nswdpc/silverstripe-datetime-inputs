@@ -281,9 +281,10 @@ class DateCompositeFieldTest extends SapphireTest
             ];
             $value = DateCompositeField::formatDateValue($date, "Ymd");
             $hasError = false;
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             $hasError = true;
         }
+
         $this->assertTrue($hasError, 'Ambiguous date provided');
     }
 
@@ -296,9 +297,10 @@ class DateCompositeFieldTest extends SapphireTest
             ];
             $value = DateCompositeField::formatDateValue($date, "Ymd");
             $hasError = false;
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             $hasError = true;
         }
+
         $this->assertTrue($hasError, 'Incomplete date provided');
     }
 
