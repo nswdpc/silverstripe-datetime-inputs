@@ -610,7 +610,7 @@ class DateCompositeField extends CompositeField
                 $this->name,
                 $e->getMessage()
             );
-        /* @phpstan-ignore catch.neverThrown */
+            /* @phpstan-ignore catch.neverThrown */
         } catch (\Exception) {
             $valid = false;
             $validator->validationError(
