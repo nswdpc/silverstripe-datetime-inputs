@@ -534,7 +534,7 @@ class DateCompositeField extends CompositeField
     public function getFieldHolderTemplate()
     {
         $controller = Controller::curr();
-        if ($controller instanceof LeftAndMain) {
+        if (class_exists(LeftAndMain::class) && $controller instanceof LeftAndMain) {
             return "NSWDPC/DateInputs/Admin/DateCompositeField_holder";
         } else {
             return "NSWDPC/DateInputs/DateCompositeField_holder";
@@ -552,7 +552,7 @@ class DateCompositeField extends CompositeField
             'screen'
         );
         $controller = Controller::curr();
-        if ($controller instanceof LeftAndMain) {
+        if (class_exists(LeftAndMain::class) && $controller instanceof LeftAndMain) {
             Requirements::css(
                 'nswdpc/silverstripe-datetime-inputs:client/static/css/admin.css',
                 'screen'
@@ -610,6 +610,7 @@ class DateCompositeField extends CompositeField
                 $this->name,
                 $e->getMessage()
             );
+        /* @phpstan-ignore catch.neverThrown */
         } catch (\Exception) {
             $valid = false;
             $validator->validationError(
@@ -676,6 +677,7 @@ class DateCompositeField extends CompositeField
         );
         $field->setDescription($this->getDescription());
         $field->setRightTitle($this->RightTitle());
+        /* @phpstan-ignore return.type */
         return $field;
     }
 

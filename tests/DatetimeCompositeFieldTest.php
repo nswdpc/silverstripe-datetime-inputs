@@ -100,6 +100,7 @@ class DatetimeCompositeFieldTest extends SapphireTest
 
         $fields = $form->Fields();
         $formDateField = $fields->dataFieldByName($fieldName);
+        $this->assertInstanceOf(DatetimeCompositeField::class, $formDateField);
 
         $children = $formDateField->getChildren();
 

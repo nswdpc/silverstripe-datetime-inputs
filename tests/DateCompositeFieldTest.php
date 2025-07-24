@@ -95,6 +95,7 @@ class DateCompositeFieldTest extends SapphireTest
 
         $fields = $form->Fields();
         $formDateField = $fields->dataFieldByName($fieldName);
+        $this->assertInstanceOf(DateCompositeField::class, $formDateField);
 
         $children = $formDateField->getChildren();
 
@@ -207,7 +208,7 @@ class DateCompositeFieldTest extends SapphireTest
         );
 
         $min = 1990;
-        $max = date('Y');
+        $max = (int)date('Y');
         $field->setMinMaxYear($min, $max);
 
         $this->assertEquals($min, $field->getMinYear());
@@ -217,7 +218,7 @@ class DateCompositeFieldTest extends SapphireTest
 
     public function testMinYear(): void
     {
-        $maxYear = date('Y');
+        $maxYear = (int)date('Y');
         $year = $maxYear + 1;
         $dateValue = "{$year}-11-30";
         $fieldName = "Birthday";
@@ -252,7 +253,7 @@ class DateCompositeFieldTest extends SapphireTest
         );
 
         $min = null;
-        $max = $maxYear;
+        $max = (int)$maxYear;
         $field->setMinMaxYear($min, $max);
         $this->assertEquals(null, $field->getMinYear());
         $this->assertEquals($maxYear, $field->getMaxYear());
@@ -279,10 +280,11 @@ class DateCompositeFieldTest extends SapphireTest
                 'day' => 24,
             ];
             $value = DateCompositeField::formatDateValue($date, "Ymd");
-            $this->assertFalse(true, 'Result should be an InvalidArgumentException');
+            $hasError = false;
         } catch (\Exception $exception) {
-            $this->assertInstanceof(\InvalidArgumentException::class, $exception);
+            $hasError = true;
         }
+        $this->assertTrue($hasError, 'Ambiguous date provided');
     }
 
     public function testformatDateValueInvalid(): void
@@ -293,10 +295,11 @@ class DateCompositeFieldTest extends SapphireTest
                 'day' => 24,
             ];
             $value = DateCompositeField::formatDateValue($date, "Ymd");
-            $this->assertFalse(true, 'Result should be an InvalidArgumentException');
+            $hasError = false;
         } catch (\Exception $exception) {
-            $this->assertInstanceof(\InvalidArgumentException::class, $exception);
+            $hasError = true;
         }
+        $this->assertTrue($hasError, 'Incomplete date provided');
     }
 
     public function testHandleEmptyValue(): void

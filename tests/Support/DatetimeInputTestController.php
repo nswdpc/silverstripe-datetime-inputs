@@ -95,7 +95,7 @@ class DatetimeInputTestController extends Controller implements TestOnly
     #[\Override]
     public function getViewer($action = null)
     {
-        return new SSViewer('BlankPage');
+        return SSViewer::create('BlankPage');
     }
 
 }
