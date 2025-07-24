@@ -2,14 +2,13 @@
 
 namespace NSWDPC\DateInputs\Tests;
 
-use NSWDPC\DateInputs\DatetimeCompositeField;
 use SilverStripe\Dev\FunctionalTest;
 
 /**
  * FunctionalTest for date field
  */
-class DatetimeCompositeFieldFunctionalTest extends FunctionalTest {
-
+class DatetimeCompositeFieldFunctionalTest extends FunctionalTest
+{
     /**
      * @inheritdoc
      */
@@ -22,12 +21,14 @@ class DatetimeCompositeFieldFunctionalTest extends FunctionalTest {
         DatetimeInputTestController::class
     ];
 
-    protected function getTestPath(): string {
+    protected function getTestPath(): string
+    {
         return 'DatetimeInputTestController';
     }
 
-    public function testDateSubmission(): void {
-        $this->get( $this->getTestPath() );
+    public function testDateSubmission(): void
+    {
+        $this->get($this->getTestPath());
         $year = '2028';
         $month = '10';
         $day = '30';
@@ -46,8 +47,9 @@ class DatetimeCompositeFieldFunctionalTest extends FunctionalTest {
         $this->assertTrue(str_contains($postSubmit->getBody(), "TEST_DATEINPUT_OK_{$year}-{$month}-{$day} {$time}"));
     }
 
-    public function testInvalidTimeSubmission(): void {
-        $this->get( $this->getTestPath() );
+    public function testInvalidTimeSubmission(): void
+    {
+        $this->get($this->getTestPath());
         $year = '2028';
         $month = '11';
         $day = '30';
@@ -68,8 +70,9 @@ class DatetimeCompositeFieldFunctionalTest extends FunctionalTest {
         $this->assertTrue(str_contains($postSubmit->getBody(), $message));
     }
 
-    public function testRequiredDateSubmission(): void {
-        $this->get( $this->getTestPath() );
+    public function testRequiredDateSubmission(): void
+    {
+        $this->get($this->getTestPath());
         $postSubmit = $this->submitForm(
             'Form_DatetimeCompositeTestForm',
             'action_doTestDate'

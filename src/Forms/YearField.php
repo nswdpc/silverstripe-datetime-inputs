@@ -8,8 +8,8 @@ use Codem\Utilities\HTML5\NumberField;
  * Year field handles validation
  * @author James
  */
-class YearField extends NumberField {
-
+class YearField extends NumberField
+{
     use DateInputChild;
 
     /**
@@ -51,7 +51,7 @@ class YearField extends NumberField {
         }
 
         $result = parent::validate($validator);
-        if(!$result) {
+        if (!$result) {
             return false;
         }
 

@@ -8,8 +8,8 @@ use Codem\Utilities\HTML5\NumberField;
  * Month input field, handles validation
  * @author James
  */
-class DayOfMonthField extends NumberField {
-
+class DayOfMonthField extends NumberField
+{
     use DateInputChild;
 
     /**
@@ -58,7 +58,7 @@ class DayOfMonthField extends NumberField {
         }
 
         $result = parent::validate($validator);
-        if(!$result) {
+        if (!$result) {
             return false;
         }
 

@@ -8,8 +8,8 @@ use SilverStripe\Dev\FunctionalTest;
 /**
  * FunctionalTest for date field
  */
-class DateCompositeFieldFunctionalTest extends FunctionalTest {
-
+class DateCompositeFieldFunctionalTest extends FunctionalTest
+{
     /**
      * @inheritdoc
      */
@@ -22,12 +22,14 @@ class DateCompositeFieldFunctionalTest extends FunctionalTest {
         DateInputTestController::class
     ];
 
-    protected function getTestPath(): string {
+    protected function getTestPath(): string
+    {
         return 'DateInputTestController';
     }
 
-    public function testDateSubmission(): void {
-        $this->get( $this->getTestPath() );
+    public function testDateSubmission(): void
+    {
+        $this->get($this->getTestPath());
         $year = '2028';
         $month = '10';
         $day = '30';
@@ -44,8 +46,9 @@ class DateCompositeFieldFunctionalTest extends FunctionalTest {
         $this->assertTrue(str_contains($postSubmit->getBody(), "TEST_DATEINPUT_OK_{$year}-{$month}-{$day}"));
     }
 
-    public function testInvalidMinMaxYearSubmission(): void {
-        $this->get( $this->getTestPath() );
+    public function testInvalidMinMaxYearSubmission(): void
+    {
+        $this->get($this->getTestPath());
         $year = '3001';// > 3000
         $month = '10';
         $day = '30';
@@ -71,8 +74,9 @@ class DateCompositeFieldFunctionalTest extends FunctionalTest {
         $this->assertTrue(str_contains($postSubmit->getBody(), $message));
     }
 
-    public function testInvalidDateSubmission(): void {
-        $this->get( $this->getTestPath() );
+    public function testInvalidDateSubmission(): void
+    {
+        $this->get($this->getTestPath());
         $year = '2028';
         $month = '11';
         $day = '31';
@@ -90,8 +94,9 @@ class DateCompositeFieldFunctionalTest extends FunctionalTest {
         $this->assertTrue(str_contains($postSubmit->getBody(), htmlspecialchars($message)));
     }
 
-    public function testInValidDayOfMonthSubmission(): void {
-        $this->get( $this->getTestPath() );
+    public function testInValidDayOfMonthSubmission(): void
+    {
+        $this->get($this->getTestPath());
         $year = '2022';
         $month = '3';
         $day = '88';
@@ -112,8 +117,9 @@ class DateCompositeFieldFunctionalTest extends FunctionalTest {
         $this->assertTrue(str_contains($postSubmit->getBody(), $message));
     }
 
-    public function testInvalidMonthNumberSubmission(): void {
-        $this->get( $this->getTestPath() );
+    public function testInvalidMonthNumberSubmission(): void
+    {
+        $this->get($this->getTestPath());
         $year = '2022';
         $month = '86';
         $day = '12';
@@ -134,8 +140,9 @@ class DateCompositeFieldFunctionalTest extends FunctionalTest {
         $this->assertTrue(str_contains($postSubmit->getBody(), $message));
     }
 
-    public function testRequiredDateSubmission(): void {
-        $this->get( $this->getTestPath() );
+    public function testRequiredDateSubmission(): void
+    {
+        $this->get($this->getTestPath());
         $postSubmit = $this->submitForm(
             'Form_DateCompositeTestForm',
             'action_doTestDate'
