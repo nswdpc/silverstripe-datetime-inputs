@@ -38,6 +38,7 @@ class MonthNumberField extends NumberField {
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function Type()
     {
         return 'monthnumber text';
@@ -47,6 +48,7 @@ class MonthNumberField extends NumberField {
      * @inheritdoc
      * The parent field handles validation for invalid complete dates
      */
+    #[\Override]
     public function validate($validator)
     {
         // Don't validate empty fields
@@ -70,6 +72,7 @@ class MonthNumberField extends NumberField {
             );
             return false;
         }
+
         return true;
     }
 

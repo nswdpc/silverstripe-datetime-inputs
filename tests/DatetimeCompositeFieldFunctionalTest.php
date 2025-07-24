@@ -22,12 +22,12 @@ class DatetimeCompositeFieldFunctionalTest extends FunctionalTest {
         DatetimeInputTestController::class
     ];
 
-    protected function getTestPath() {
+    protected function getTestPath(): string {
         return 'DatetimeInputTestController';
     }
 
-    public function testDateSubmission() {
-        $page = $this->get( $this->getTestPath() );
+    public function testDateSubmission(): void {
+        $this->get( $this->getTestPath() );
         $year = '2028';
         $month = '10';
         $day = '30';
@@ -43,11 +43,11 @@ class DatetimeCompositeFieldFunctionalTest extends FunctionalTest {
             ]
         );
         $this->assertEquals(200, $postSubmit->getStatusCode());
-        $this->assertTrue(strpos($postSubmit->getBody(), "TEST_DATEINPUT_OK_{$year}-{$month}-{$day} {$time}") !== false);
+        $this->assertTrue(str_contains($postSubmit->getBody(), "TEST_DATEINPUT_OK_{$year}-{$month}-{$day} {$time}"));
     }
 
-    public function testInvalidTimeSubmission() {
-        $page = $this->get( $this->getTestPath() );
+    public function testInvalidTimeSubmission(): void {
+        $this->get( $this->getTestPath() );
         $year = '2028';
         $month = '11';
         $day = '30';
@@ -65,17 +65,17 @@ class DatetimeCompositeFieldFunctionalTest extends FunctionalTest {
         );
         $this->assertEquals(200, $postSubmit->getStatusCode());
         $message = "Please enter a valid date";//TODO _t()
-        $this->assertTrue(strpos($postSubmit->getBody(), $message) !== false);
+        $this->assertTrue(str_contains($postSubmit->getBody(), $message));
     }
 
-    public function testRequiredDateSubmission() {
-        $page = $this->get( $this->getTestPath() );
+    public function testRequiredDateSubmission(): void {
+        $this->get( $this->getTestPath() );
         $postSubmit = $this->submitForm(
             'Form_DatetimeCompositeTestForm',
             'action_doTestDate'
         );
         $message = '"Test date" is required';
-        $this->assertTrue(strpos($postSubmit->getBody(), htmlspecialchars($message)) !== false);
+        $this->assertTrue(str_contains($postSubmit->getBody(), htmlspecialchars($message)));
     }
 
 }

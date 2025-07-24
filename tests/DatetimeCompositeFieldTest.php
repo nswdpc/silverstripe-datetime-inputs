@@ -21,7 +21,7 @@ class DatetimeCompositeFieldTest extends SapphireTest {
 
     protected $usesDatabase = false;
 
-    public function testDateParser() {
+    public function testDateParser(): void {
 
         $inputValue = '2022-1-31 11:45';
         $results = DatetimeCompositeField::parseDateTime($inputValue);
@@ -47,7 +47,7 @@ class DatetimeCompositeFieldTest extends SapphireTest {
         $this->assertEquals('', $results['time']);
     }
 
-    public function testFieldCreate() {
+    public function testFieldCreate(): void {
         $dateValue = "2030-12-14 11:45";
         $fieldName = "EventDatetime";
         $field = DatetimeCompositeField::create(
@@ -60,7 +60,7 @@ class DatetimeCompositeFieldTest extends SapphireTest {
         $this->assertEquals($dateValue, $dateValueReturned);
     }
 
-    public function testFieldChildren() {
+    public function testFieldChildren(): void {
         $dateValue = "2030-12-14 23:59";
         $fieldName = "EventDatetime";
         $field = DatetimeCompositeField::create(
@@ -77,7 +77,7 @@ class DatetimeCompositeFieldTest extends SapphireTest {
 
     }
 
-    public function testFieldViaForm() {
+    public function testFieldViaForm(): void {
 
         $dateValue = "2030-12-14 04:45";
 
@@ -107,7 +107,7 @@ class DatetimeCompositeFieldTest extends SapphireTest {
 
 
 
-    public function testFieldWarning() {
+    public function testFieldWarning(): void {
 
         // an invalid time on the date
         $dateValue = "2030-11-30 25:69";
@@ -124,7 +124,7 @@ class DatetimeCompositeFieldTest extends SapphireTest {
 
     }
 
-    public function testDmyFieldOrdering() {
+    public function testDmyFieldOrdering(): void {
         $dateValue = "2030-11-30 11:45";
         $fieldName = "AppointmentDateTime";
         $field = DatetimeCompositeField::create(
@@ -149,7 +149,7 @@ class DatetimeCompositeFieldTest extends SapphireTest {
 
     }
 
-    public function testMdyFieldOrdering() {
+    public function testMdyFieldOrdering(): void {
         $dateValue = "2030-11-30 11:45";
         $fieldName = "AppointmentDateTime";
         $field = DatetimeCompositeField::create(
@@ -174,7 +174,7 @@ class DatetimeCompositeFieldTest extends SapphireTest {
 
     }
 
-    public function testYmdFieldOrdering() {
+    public function testYmdFieldOrdering(): void {
         $dateValue = "2030-11-30 11:45";
         $fieldName = "AppointmentDateTime";
         $field = DatetimeCompositeField::create(
@@ -199,7 +199,7 @@ class DatetimeCompositeFieldTest extends SapphireTest {
 
     }
 
-    public function testPlaceholders() {
+    public function testPlaceholders(): void {
         $field = DatetimeCompositeField::create(
             'placeholders',
             'test date',
@@ -211,11 +211,12 @@ class DatetimeCompositeFieldTest extends SapphireTest {
                 // skip, does not have placeholder
                 continue;
             }
+
             $this->assertNotNull($childField->getAttribute('placeholder'));
         }
     }
 
-    public function testNoPlaceholders() {
+    public function testNoPlaceholders(): void {
         $field = DatetimeCompositeField::create(
             'hideplaceholders',
             'test date',

@@ -11,7 +11,7 @@ trait DateInputChild {
     /**
      * The parent field handles data
      */
-    public function hasData() {
+    public function hasData(): bool {
         return false;
     }
 
@@ -25,6 +25,7 @@ trait DateInputChild {
             $dateTimeCompositeField = $container->getContainerField();
             $isRequired = $dateTimeCompositeField->Required();
         }
+
         return $isRequired;
     }
 
@@ -36,6 +37,7 @@ trait DateInputChild {
         for($i=$min; $i<=$max; $i++) {
             $list[ $i ] = $i;
         }
+
         return $list;
     }
 
