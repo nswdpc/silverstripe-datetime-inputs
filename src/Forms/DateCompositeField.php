@@ -11,7 +11,6 @@ use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\ORM\FieldType\DBDate;
 use SilverStripe\ORM\DataObjectInterface;
-use SilverStripe\ORM\ValidationException;
 use SilverStripe\Core\Validation\ValidationResult;
 use SilverStripe\View\Requirements;
 
