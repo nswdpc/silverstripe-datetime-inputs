@@ -6,12 +6,9 @@ use NSWDPC\DateInputs\DateCompositeField;
 use NSWDPC\DateInputs\DayOfMonthField;
 use NSWDPC\DateInputs\MonthNumberField;
 use NSWDPC\DateInputs\YearField;
-use SilverStripe\Control\Controller;
-use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Form;
-use SilverStripe\Forms\RequiredFields;
 
 /**
  * Test the date field
@@ -99,6 +96,7 @@ class DateCompositeFieldTest extends SapphireTest
         $fields = $form->Fields();
         /** @var \NSWDPC\DateInputs\DateCompositeField $formDateField */
         $formDateField = $fields->dataFieldByName($fieldName);
+        $this->assertInstanceOf(DateCompositeField::class, $formDateField);
 
         $children = $formDateField->getChildren();
 
@@ -221,7 +219,7 @@ class DateCompositeFieldTest extends SapphireTest
 
     public function testMinYear(): void
     {
-        $maxYear = date('Y');
+        $maxYear = (int)date('Y');
         $year = $maxYear + 1;
         $dateValue = "{$year}-11-30";
         $fieldName = "Birthday";
@@ -283,10 +281,12 @@ class DateCompositeFieldTest extends SapphireTest
                 'day' => 24,
             ];
             $value = DateCompositeField::formatDateValue($date, "Ymd");
-            $this->assertEmpty($value, 'Result should be an InvalidArgumentException');
-        } catch (\Exception $exception) {
-            $this->assertInstanceof(\InvalidArgumentException::class, $exception);
+            $hasError = false;
+        } catch (\Exception) {
+            $hasError = true;
         }
+
+        $this->assertTrue($hasError, 'Ambiguous date provided');
     }
 
     public function testformatDateValueInvalid(): void
@@ -297,10 +297,12 @@ class DateCompositeFieldTest extends SapphireTest
                 'day' => 24,
             ];
             $value = DateCompositeField::formatDateValue($date, "Ymd");
-            $this->assertEmpty($value, 'Result should be an InvalidArgumentException');
-        } catch (\Exception $exception) {
-            $this->assertInstanceof(\InvalidArgumentException::class, $exception);
+            $hasError = false;
+        } catch (\Exception) {
+            $hasError = true;
         }
+
+        $this->assertTrue($hasError, 'Incomplete date provided');
     }
 
     public function testHandleEmptyValue(): void

@@ -2,7 +2,6 @@
 
 namespace NSWDPC\DateInputs\Tests;
 
-use NSWDPC\DateInputs\DatetimeCompositeField;
 use SilverStripe\Dev\FunctionalTest;
 
 /**

@@ -8,8 +8,6 @@ use NSWDPC\DateInputs\DayOfMonthField;
 use NSWDPC\DateInputs\MonthNumberField;
 use NSWDPC\DateInputs\YearField;
 use NSWDPC\DateInputs\TimeField;
-use SilverStripe\Control\Controller;
-use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Form;
@@ -102,6 +100,7 @@ class DatetimeCompositeFieldTest extends SapphireTest
 
         $fields = $form->Fields();
         $formDateField = $fields->dataFieldByName($fieldName);
+        $this->assertInstanceOf(DatetimeCompositeField::class, $formDateField);
 
         /** @var \NSWDPC\DateInputs\DatetimeCompositeField $formDateField */
         $children = $formDateField->getChildren();

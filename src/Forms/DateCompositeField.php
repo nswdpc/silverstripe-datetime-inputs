@@ -225,7 +225,6 @@ class DateCompositeField extends CompositeField
             }
         } elseif (is_string($value)) {
             $this->dateValue['strValue'] = $value;
-
             try {
                 // string value loaded from data or in field creation
                 $parts = self::parseDateTime($this->dateValue['strValue']);
