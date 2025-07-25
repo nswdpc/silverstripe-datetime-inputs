@@ -8,8 +8,8 @@ use Codem\Utilities\HTML5\NumberField;
  * Year field handles validation
  * @author James
  */
-class YearField extends NumberField {
-
+class YearField extends NumberField
+{
     use DateInputChild;
 
     /**
@@ -32,6 +32,7 @@ class YearField extends NumberField {
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function Type()
     {
         return 'year text';
@@ -41,6 +42,7 @@ class YearField extends NumberField {
      * @inheritdoc
      * The parent field handles validation for invalid complete dates
      */
+    #[\Override]
     public function validate($validator)
     {
         // Don't validate empty fields
@@ -49,7 +51,7 @@ class YearField extends NumberField {
         }
 
         $result = parent::validate($validator);
-        if(!$result) {
+        if (!$result) {
             return false;
         }
 
@@ -57,7 +59,7 @@ class YearField extends NumberField {
         $valid = true;
         $minYear = $this->getAttribute('min');
         $maxYear = $this->getAttribute('max');
-        if($minYear && $maxYear) {
+        if ($minYear && $maxYear) {
             if ($this->value < $minYear || $this->value > $maxYear) {
                 $validator->validationError(
                     $this->name,
@@ -72,7 +74,7 @@ class YearField extends NumberField {
                 );
                 $valid = false;
             }
-        } else if($minYear) {
+        } elseif ($minYear) {
             if ($this->value < $minYear) {
                 $validator->validationError(
                     $this->name,
@@ -86,7 +88,7 @@ class YearField extends NumberField {
                 );
                 $valid = false;
             }
-        } else if($maxYear) {
+        } elseif ($maxYear) {
             if ($this->value > $maxYear) {
                 $validator->validationError(
                     $this->name,
@@ -101,6 +103,7 @@ class YearField extends NumberField {
                 $valid = false;
             }
         }
+
         return $valid;
     }
 

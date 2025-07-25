@@ -13,7 +13,6 @@
     "authors": [
         {
             "name": "James Ellis",
-            "homepage": "https://dpc.nsw.gov.au",
             "role": "Developer"
         }
     ],
@@ -22,12 +21,27 @@
         "codem/silverstripe-html5-inputs": "^1"
     },
     "require-dev": {
+        "cambis/silverstripe-rector": "^2",
+        "cambis/silverstan": "^2",
+        "friendsofphp/php-cs-fixer": "^3",
         "phpunit/phpunit": "^9.5",
-        "friendsofphp/php-cs-fixer": "^3"
+        "phpstan/phpstan": "^2",
+        "phpstan/phpstan-phpunit": "^2",
+        "rector/rector": "^2",
+        "nswdpc/ci-files": "dev-v-4",
+        "vlucas/phpdotenv": "^5"
     },
     "extra": {
         "expose": [
             "client/static"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "silverstripe/vendor-plugin": true,
+            "silverstripe/recipe-plugin": true,
+            "phpstan/extension-installer": true
+        }
     }
 }

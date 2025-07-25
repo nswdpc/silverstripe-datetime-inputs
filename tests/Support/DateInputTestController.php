@@ -15,12 +15,12 @@ use SilverStripe\View\SSViewer;
  * Test controller for Datetime input testing
  * @author James
  */
-class DateInputTestController extends Controller implements TestOnly {
-
+class DateInputTestController extends Controller implements TestOnly
+{
     /**
      * @config
      */
-    private static $allowed_actions = [
+    private static array $allowed_actions = [
         'DateCompositeTestForm',
         'doTestDate'
     ];
@@ -28,14 +28,14 @@ class DateInputTestController extends Controller implements TestOnly {
     /**
      * @config
      */
-    private static $url_segment = "DateInputTestController";
+    private static string $url_segment = "DateInputTestController";
 
     protected $template = 'BlankPage';
 
     /**
      * @config
      */
-    private static $url_handlers = [
+    private static array $url_handlers = [
         '$Action//$ID/$OtherID' => "handleAction",
     ];
 
@@ -47,6 +47,7 @@ class DateInputTestController extends Controller implements TestOnly {
         }
     }
 
+    #[\Override]
     public function Link($action = null)
     {
         /** @skipUpgrade */
@@ -56,11 +57,13 @@ class DateInputTestController extends Controller implements TestOnly {
         );
     }
 
-    public function DateCompositeTestForm() {
+    public function DateCompositeTestForm()
+    {
         return $this->Form();
     }
 
-    public function Form() {
+    public function Form()
+    {
 
         $dateCompositeField = DateCompositeField::create(
             'TestDate',
@@ -70,8 +73,7 @@ class DateInputTestController extends Controller implements TestOnly {
         $min = 1990;
         $max = 3000;
         $dateCompositeField->setMinMaxYear($min, $max);
-
-        $form = Form::create(
+        return Form::create(
             $this,
             "DateCompositeTestForm",
             Fieldlist::create(
@@ -85,18 +87,19 @@ class DateInputTestController extends Controller implements TestOnly {
             ),
             RequiredFields::create(['TestDate'])
         );
-        return $form;
     }
 
-    public function doTestDate($data, $form, $request) {
+    public function doTestDate($data, $form, $request): \SilverStripe\Control\HTTPResponse
+    {
         $dataValue = $form->Fields()->dataFieldByName('TestDate')->dataValue();
         $form->sessionMessage('TEST_DATEINPUT_OK_' . $dataValue, 'good');
         return $this->redirectBack();
     }
 
+    #[\Override]
     public function getViewer($action = null)
     {
-        return new SSViewer('BlankPage');
+        return SSViewer::create('BlankPage');
     }
 
 }

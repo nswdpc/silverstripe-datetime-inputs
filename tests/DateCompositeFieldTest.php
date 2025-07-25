@@ -6,21 +6,19 @@ use NSWDPC\DateInputs\DateCompositeField;
 use NSWDPC\DateInputs\DayOfMonthField;
 use NSWDPC\DateInputs\MonthNumberField;
 use NSWDPC\DateInputs\YearField;
-use SilverStripe\Control\Controller;
-use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Form;
-use SilverStripe\Forms\RequiredFields;
 
 /**
  * Test the date field
  */
-class DateCompositeFieldTest extends SapphireTest {
-
+class DateCompositeFieldTest extends SapphireTest
+{
     protected $usesDatabase = false;
 
-    public function testDateParser() {
+    public function testDateParser(): void
+    {
 
         $inputValue = '2022-1-31';
         $results = DateCompositeField::parseDateTime($inputValue);
@@ -43,7 +41,8 @@ class DateCompositeFieldTest extends SapphireTest {
         $this->assertEquals('', $results['day']);
     }
 
-    public function testFieldCreate() {
+    public function testFieldCreate(): void
+    {
         $dateValue = "2030-12-14";
         $fieldName = "EventDate";
         $field = DateCompositeField::create(
@@ -56,7 +55,8 @@ class DateCompositeFieldTest extends SapphireTest {
         $this->assertEquals($dateValue, $dateValueReturned);
     }
 
-    public function testFieldChildren() {
+    public function testFieldChildren(): void
+    {
         $dateValue = "2030-12-14";
         $fieldName = "EventDate";
         $field = DateCompositeField::create(
@@ -73,7 +73,8 @@ class DateCompositeFieldTest extends SapphireTest {
 
     }
 
-    public function testFieldViaForm() {
+    public function testFieldViaForm(): void
+    {
 
         $dateValue = "2030-12-14";
 
@@ -87,13 +88,14 @@ class DateCompositeFieldTest extends SapphireTest {
         $form = Form::create(
             null,
             'TestEventForm',
-            FieldList::create( $dateField )
+            FieldList::create($dateField)
         );
 
-        $form->loadDataFrom( ['EventDate' => $dateValue ] );
+        $form->loadDataFrom(['EventDate' => $dateValue ]);
 
         $fields = $form->Fields();
         $formDateField = $fields->dataFieldByName($fieldName);
+        $this->assertInstanceOf(DateCompositeField::class, $formDateField);
 
         $children = $formDateField->getChildren();
 
@@ -101,7 +103,8 @@ class DateCompositeFieldTest extends SapphireTest {
 
     }
 
-    public function testFieldWarning() {
+    public function testFieldWarning(): void
+    {
 
         // an invalid date
         $dateValue = "2030-11-31";
@@ -114,11 +117,12 @@ class DateCompositeFieldTest extends SapphireTest {
         );
         $field->setFieldWarning($fieldWarning);
 
-        $this->assertEquals( $fieldWarning, $field->getFieldWarning() );
+        $this->assertEquals($fieldWarning, $field->getFieldWarning());
 
     }
 
-    public function testDmyFieldOrdering() {
+    public function testDmyFieldOrdering(): void
+    {
         $dateValue = "2030-11-30";
         $fieldName = "Birthday";
         $field = DateCompositeField::create(
@@ -133,15 +137,16 @@ class DateCompositeFieldTest extends SapphireTest {
         $monthField = $children->offsetGet(1);
         $yearField = $children->offsetGet(2);
 
-        $this->assertInstanceOf( DayOfMonthField::class, $dayField );
-        $this->assertInstanceOf( MonthNumberField::class, $monthField );
-        $this->assertInstanceOf( YearField::class, $yearField );
+        $this->assertInstanceOf(DayOfMonthField::class, $dayField);
+        $this->assertInstanceOf(MonthNumberField::class, $monthField);
+        $this->assertInstanceOf(YearField::class, $yearField);
 
-        $this->assertEquals($dateValue, $field->dataValue() );
+        $this->assertEquals($dateValue, $field->dataValue());
 
     }
 
-    public function testMdyFieldOrdering() {
+    public function testMdyFieldOrdering(): void
+    {
         $dateValue = "2030-11-30";
         $fieldName = "Birthday";
         $field = DateCompositeField::create(
@@ -156,15 +161,16 @@ class DateCompositeFieldTest extends SapphireTest {
         $monthField = $children->offsetGet(0);
         $yearField = $children->offsetGet(2);
 
-        $this->assertInstanceOf( DayOfMonthField::class, $dayField );
-        $this->assertInstanceOf( MonthNumberField::class, $monthField );
-        $this->assertInstanceOf( YearField::class, $yearField );
+        $this->assertInstanceOf(DayOfMonthField::class, $dayField);
+        $this->assertInstanceOf(MonthNumberField::class, $monthField);
+        $this->assertInstanceOf(YearField::class, $yearField);
 
-        $this->assertEquals($dateValue, $field->dataValue() );
+        $this->assertEquals($dateValue, $field->dataValue());
 
     }
 
-    public function testYmdFieldOrdering() {
+    public function testYmdFieldOrdering(): void
+    {
         $dateValue = "2030-11-30";
         $fieldName = "Birthday";
         $field = DateCompositeField::create(
@@ -179,15 +185,16 @@ class DateCompositeFieldTest extends SapphireTest {
         $monthField = $children->offsetGet(1);
         $yearField = $children->offsetGet(0);
 
-        $this->assertInstanceOf( DayOfMonthField::class, $dayField );
-        $this->assertInstanceOf( MonthNumberField::class, $monthField );
-        $this->assertInstanceOf( YearField::class, $yearField );
+        $this->assertInstanceOf(DayOfMonthField::class, $dayField);
+        $this->assertInstanceOf(MonthNumberField::class, $monthField);
+        $this->assertInstanceOf(YearField::class, $yearField);
 
-        $this->assertEquals($dateValue, $field->dataValue() );
+        $this->assertEquals($dateValue, $field->dataValue());
 
     }
 
-    public function testMinMaxYear() {
+    public function testMinMaxYear(): void
+    {
         $maxYear = date('Y');
         $year = $maxYear + 1;
         $dateValue = "{$year}-11-30";
@@ -201,16 +208,17 @@ class DateCompositeFieldTest extends SapphireTest {
         );
 
         $min = 1990;
-        $max = date('Y');
+        $max = (int)date('Y');
         $field->setMinMaxYear($min, $max);
 
-        $this->assertEquals($min, $field->getMinYear() );
-        $this->assertEquals($max, $field->getMaxYear() );
+        $this->assertEquals($min, $field->getMinYear());
+        $this->assertEquals($max, $field->getMaxYear());
 
     }
 
-    public function testMinYear() {
-        $maxYear = date('Y');
+    public function testMinYear(): void
+    {
+        $maxYear = (int)date('Y');
         $year = $maxYear + 1;
         $dateValue = "{$year}-11-30";
         $fieldName = "Birthday";
@@ -225,12 +233,13 @@ class DateCompositeFieldTest extends SapphireTest {
         $min = 1990;
         $max = null;
         $field->setMinMaxYear($min, $max);
-        $this->assertEquals($min, $field->getMinYear() );
-        $this->assertEquals(null, $field->getMaxYear() );
+        $this->assertEquals($min, $field->getMinYear());
+        $this->assertEquals(null, $field->getMaxYear());
 
     }
 
-    public function testMaxYear() {
+    public function testMaxYear(): void
+    {
         $maxYear = date('Y');
         $year = $maxYear + 1;
         $dateValue = "{$year}-11-30";
@@ -244,14 +253,15 @@ class DateCompositeFieldTest extends SapphireTest {
         );
 
         $min = null;
-        $max = $maxYear;
+        $max = (int)$maxYear;
         $field->setMinMaxYear($min, $max);
-        $this->assertEquals(null, $field->getMinYear() );
-        $this->assertEquals($maxYear, $field->getMaxYear() );
+        $this->assertEquals(null, $field->getMinYear());
+        $this->assertEquals($maxYear, $field->getMaxYear());
 
     }
 
-    public function testformatDateValueValid() {
+    public function testformatDateValueValid(): void
+    {
         $date = [
             'year' => 2010,
             'month' => 4,
@@ -261,7 +271,8 @@ class DateCompositeFieldTest extends SapphireTest {
         $this->assertEquals('20100424', $value);
     }
 
-    public function testformatDateValueAmbiguous() {
+    public function testformatDateValueAmbiguous(): void
+    {
         try {
             $date = [
                 'year' => 2010,
@@ -269,26 +280,32 @@ class DateCompositeFieldTest extends SapphireTest {
                 'day' => 24,
             ];
             $value = DateCompositeField::formatDateValue($date, "Ymd");
-            $this->assertFalse(true, 'Result should be an InvalidArgumentException');
-        } catch (\Exception $e) {
-            $this->assertInstanceof(\InvalidArgumentException::class, $e);
+            $hasError = false;
+        } catch (\Exception) {
+            $hasError = true;
         }
+
+        $this->assertTrue($hasError, 'Ambiguous date provided');
     }
 
-    public function testformatDateValueInvalid() {
+    public function testformatDateValueInvalid(): void
+    {
         try {
             $date = [
                 'month' => 4,
                 'day' => 24,
             ];
             $value = DateCompositeField::formatDateValue($date, "Ymd");
-            $this->assertFalse(true, 'Result should be an InvalidArgumentException');
-        } catch (\Exception $e) {
-            $this->assertInstanceof(\InvalidArgumentException::class, $e);
+            $hasError = false;
+        } catch (\Exception) {
+            $hasError = true;
         }
+
+        $this->assertTrue($hasError, 'Incomplete date provided');
     }
 
-    public function testHandleEmptyValue() {
+    public function testHandleEmptyValue(): void
+    {
         $field = DateCompositeField::create(
             'testdate',
             'test date',
@@ -299,7 +316,8 @@ class DateCompositeFieldTest extends SapphireTest {
         $this->assertEquals("", $field->dataValue());
     }
 
-    public function testHandlePartialValue() {
+    public function testHandlePartialValue(): void
+    {
         $field = DateCompositeField::create(
             'testdate',
             'test date',
@@ -312,26 +330,28 @@ class DateCompositeFieldTest extends SapphireTest {
         $this->assertEquals("", $field->dataValue());
     }
 
-    public function testPlaceholders() {
+    public function testPlaceholders(): void
+    {
         $field = DateCompositeField::create(
             'placeholders',
             'test date',
             null
         );
         $children = $field->getChildren();
-        foreach($children as $childField) {
+        foreach ($children as $childField) {
             $this->assertNotNull($childField->getAttribute('placeholder'));
         }
     }
 
-    public function testNoPlaceholders() {
+    public function testNoPlaceholders(): void
+    {
         $field = DateCompositeField::create(
             'hideplaceholders',
             'test date',
             null
         )->hidePlaceholders();
         $children = $field->getChildren();
-        foreach($children as $childField) {
+        foreach ($children as $childField) {
             $this->assertNull($childField->getAttribute('placeholder'));
         }
     }
