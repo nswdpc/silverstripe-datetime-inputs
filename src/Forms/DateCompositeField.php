@@ -11,6 +11,7 @@ use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\ORM\FieldType\DBDate;
 use SilverStripe\ORM\DataObjectInterface;
+use SilverStripe\Core\Validation\ValidationResult;
 use SilverStripe\View\Requirements;
 
 /**
@@ -588,51 +589,49 @@ class DateCompositeField extends CompositeField
         return true;
     }
 
-    /**
-     * @inheritdoc
-     */
     #[\Override]
-    public function validate($validator)
+    public function validate(): ValidationResult
     {
-        $valid = parent::validate($validator);
-        if (!$valid) {
+        $validationResult = parent::validate();
+        if (!$validationResult->isValid()) {
             // parent validation failed
-            return false;
+            return $validationResult;
         }
 
         try {
-            $valid = true;
             // perform full date validation on the value
             $this->checkProvidedDateTime($this->dateValue['strValue']);
         } catch (DateValidationException $e) {
-            $valid = false;
-            $validator->validationError(
+            $validationResult->addFieldError(
                 $this->name,
-                $e->getMessage()
+                $e->getMessage(),
+                ValidationResult::TYPE_ERROR
             );
-            /* @phpstan-ignore catch.neverThrown */
+            /** @phpstan-ignore catch.neverThrown */
         } catch (\Exception) {
-            $valid = false;
-            $validator->validationError(
+            // A general exception can be thrown on invalid date values
+            $validationResult->addFieldError(
                 $this->name,
-                self::getDateValidationErrorMessage($this->dateValue['strValue'])
+                self::getDateValidationErrorMessage($this->dateValue['strValue']),
+                ValidationResult::TYPE_ERROR
             );
         }
 
-        if (!$valid) {
-            $validator->validationError(
-                '',// no field
+        /** @phpstan-ignore booleanNot.alwaysFalse */
+        if (!$validationResult->isValid()) {
+            $validationResult->addError(
                 _t(
                     'DateCompositeField.FIELD_HAS_ERRORS',
                     "The field '{fieldTitle}' contains errors",
                     [
                         'fieldTitle' => $this->Title()
                     ]
-                )
+                ),
+                ValidationResult::TYPE_ERROR
             );
         }
 
-        return $valid;
+        return $validationResult;
     }
 
     /**
@@ -652,10 +651,12 @@ class DateCompositeField extends CompositeField
     /**
      * Return formatted representation of the current field value
      */
+    #[\Override]
     public function getFormattedValue(): ?string
     {
-        $value = $this->Value();
+        $value = $this->getValue();
         if ($value) {
+            /** @var \SilverStripe\ORM\FieldType\DBDate $dbField */
             $dbField = DBField::create_field(DBDate::class, $value);
             $value = $dbField->FormatFromSettings();
         }
@@ -663,9 +664,6 @@ class DateCompositeField extends CompositeField
         return $value;
     }
 
-    /**
-     * The readonly version of this field
-     */
     #[\Override]
     public function performReadonlyTransformation()
     {
@@ -677,7 +675,7 @@ class DateCompositeField extends CompositeField
         );
         $field->setDescription($this->getDescription());
         $field->setRightTitle($this->RightTitle());
-        /* @phpstan-ignore return.type */
+        /** @phpstan-ignore return.type */
         return $field;
     }
 

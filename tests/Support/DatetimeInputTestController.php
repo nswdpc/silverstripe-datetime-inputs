@@ -8,7 +8,6 @@ use SilverStripe\Dev\TestOnly;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Form;
 use SilverStripe\Forms\FormAction;
-use SilverStripe\Forms\RequiredFields;
 use SilverStripe\View\SSViewer;
 
 /**
@@ -42,7 +41,7 @@ class DatetimeInputTestController extends Controller implements TestOnly
     public function __construct()
     {
         parent::__construct();
-        if (Controller::has_curr()) {
+        if (\SilverStripe\Control\Controller::curr() instanceof \SilverStripe\Control\Controller) {
             $this->setRequest(Controller::curr()->getRequest());
         }
     }
@@ -81,7 +80,7 @@ class DatetimeInputTestController extends Controller implements TestOnly
                     'Submit'
                 )
             ),
-            RequiredFields::create(['TestDate'])
+            \SilverStripe\Forms\Validation\RequiredFieldsValidator::create(['TestDate'])
         );
     }
 
