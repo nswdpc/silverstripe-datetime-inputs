@@ -454,7 +454,7 @@ class DateCompositeField extends CompositeField
      * @throws \RuntimeException
      * @inheritdoc
      */
-    protected function buildDateTimeFields(): Fieldlist
+    protected function buildDateTimeFields(): FieldList
     {
 
         if (!$this->hasFields()) {
