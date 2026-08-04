@@ -334,7 +334,7 @@ class DateCompositeField extends CompositeField
      * @param int|null $minYear
      * @param int|null $maxYear
      */
-    public function setMinMaxYear(int $minYear = null, int $maxYear = null): self
+    public function setMinMaxYear(?int $minYear = null, ?int $maxYear = null): self
     {
         if ($this->yearField) {
             $this->yearField->setAttribute('min', $minYear)->setAttribute('max', $maxYear);
