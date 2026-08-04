@@ -138,7 +138,7 @@ class DateCompositeField extends CompositeField
         $date[] = static::getStringValueFromArray($dateValue, 'month');
         $date[] = static::getStringValueFromArray($dateValue, 'day');
         $date = array_filter($date);// remove empties
-        if (count($date) != 3) {
+        if (count($date) !== 3) {
             throw new \InvalidArgumentException("Invalid dateValue passed to formatDateValue - requires a year, month and day value as strings");
         }
 
@@ -331,8 +331,6 @@ class DateCompositeField extends CompositeField
 
     /**
      * Set minimum allowed year value
-     * @param int|null $minYear
-     * @param int|null $maxYear
      */
     public function setMinMaxYear(?int $minYear = null, ?int $maxYear = null): self
     {
