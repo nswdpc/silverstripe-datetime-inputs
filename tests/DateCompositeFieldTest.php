@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NSWDPC\DateInputs\Tests;
 
 use NSWDPC\DateInputs\DateCompositeField;
@@ -94,6 +96,7 @@ class DateCompositeFieldTest extends SapphireTest
         $form->loadDataFrom(['EventDate' => $dateValue ]);
 
         $fields = $form->Fields();
+        /** @var \NSWDPC\DateInputs\DateCompositeField $formDateField */
         $formDateField = $fields->dataFieldByName($fieldName);
         $this->assertInstanceOf(DateCompositeField::class, $formDateField);
 

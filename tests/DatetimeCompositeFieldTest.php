@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace NSWDPC\DateInputs\Tests;
 
 use NSWDPC\DateInputs\DateCompositeField;
@@ -102,6 +104,7 @@ class DatetimeCompositeFieldTest extends SapphireTest
         $formDateField = $fields->dataFieldByName($fieldName);
         $this->assertInstanceOf(DatetimeCompositeField::class, $formDateField);
 
+        /** @var \NSWDPC\DateInputs\DatetimeCompositeField $formDateField */
         $children = $formDateField->getChildren();
 
         $this->assertEquals(4, $children->count());
